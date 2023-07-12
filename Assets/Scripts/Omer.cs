@@ -47,21 +47,32 @@ public class Omer : MonoBehaviour
         letterCubes.Clear();
 
 
-
-        float lastXpos = 0f;
+        const float margin = 4f;
+        float lastXpos = -margin;
+        float lastYpos = margin;
+        int batchNumber = 0;
+        const int batchSize = 8;
         foreach (var letter in GenerateRandomString())
         {
             var letterCube = letterGenerator.Generate(letter);
-            letterCube.position = new Vector3(lastXpos, 0f, 0f);
+            letterCube.position = new Vector3(lastXpos, lastYpos, 0f);
             letterCubes.Add(letterCube);
             lastXpos += space;
+
+            batchNumber++;
+            if (batchNumber == batchSize)
+            {
+                lastYpos -= space;
+                lastXpos = -margin;
+                batchNumber = 0;
+            }
         }
     }
 
     private string GenerateRandomString()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, random.Next(5, 10))
+        return new string(Enumerable.Repeat(chars, 64)
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
