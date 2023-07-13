@@ -11,7 +11,7 @@ public class Omer : MonoBehaviour
     float timePassedWordCreation = 0f;
 
 
-    const float wordCreationInterval = 1f;
+    const float wordCreationInterval = 10f;
     System.Random random; // lol
 
     private void Awake()
