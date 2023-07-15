@@ -13,12 +13,11 @@ public class GameInput : MonoBehaviour
 
     public EventHandler OnSelectReleaseAction;
 
-    public EventHandler<OnLetterSelectEventArgs> OnLetterSelectAction;
-    public class OnLetterSelectEventArgs : EventArgs
+    public EventHandler<OnLetterLayerSelectEventArgs> OnLetterLayerSelectAction;
+    public class OnLetterLayerSelectEventArgs : EventArgs
     {
         public LetterCube letterCube;
     }
-
 
     // Functions
 
@@ -37,12 +36,13 @@ public class GameInput : MonoBehaviour
         if (Input.GetMouseButton(0)) // Player Input Actions 
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // const int letterLayer = 6;
+            // const float maxDist = 10f;
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.Log($"Hit something {hit.transform.name}");
                 if (hit.transform.TryGetComponent<LetterCube>(out LetterCube letterCube))
                 {
-                    OnLetterSelectAction?.Invoke(this, new OnLetterSelectEventArgs { letterCube = letterCube });
+                    OnLetterLayerSelectAction?.Invoke(this, new OnLetterLayerSelectEventArgs { letterCube = letterCube });
                 }
             }
         }

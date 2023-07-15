@@ -16,4 +16,9 @@ public class LetterCube : MonoBehaviour
         }
     }
 
+    public char GetLetter()
+    {
+        return sides[0].text.ToString()[0];
+    }
+
 }

@@ -8,7 +8,7 @@ public class Omer : MonoBehaviour
     [SerializeField] private LetterGenerator letterGenerator;
 
     List<Transform> letterCubes;
-    float timePassedWordCreation = 0f;
+    float timePassedWordCreation = wordCreationInterval + 1f; // words are generated at game start
 
 
     const float wordCreationInterval = 10f;
@@ -33,6 +33,7 @@ public class Omer : MonoBehaviour
             GenerateRandomWordCubes();
             timePassedWordCreation = 0;
         }
+        timePassedWordCreation = 0;
     }
 
     private void GenerateRandomWordCubes()
