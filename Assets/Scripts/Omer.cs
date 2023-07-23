@@ -11,7 +11,7 @@ public class Omer : MonoBehaviour
     float timePassedWordCreation = wordCreationInterval + 1f; // words are generated at game start
 
 
-    const float wordCreationInterval = 10f;
+    const float wordCreationInterval = 2f;
     System.Random random; // lol
 
     private void Awake()
@@ -31,6 +31,7 @@ public class Omer : MonoBehaviour
         if (timePassedWordCreation > wordCreationInterval)
         {
             GenerateRandomWordCubes();
+            SetLetterLayout();
             timePassedWordCreation = 0;
         }
         timePassedWordCreation = 0;
@@ -38,8 +39,6 @@ public class Omer : MonoBehaviour
 
     private void GenerateRandomWordCubes()
     {
-        const float space = 1.1f;
-
         // clear the old cubes
         foreach (var letterCube in letterCubes)
         {
@@ -47,34 +46,35 @@ public class Omer : MonoBehaviour
         }
         letterCubes.Clear();
 
-
-        const float margin = 4f;
-        float lastXpos = -margin;
-        float lastYpos = margin;
-        int batchNumber = 0;
-        const int batchSize = 8;
         foreach (var letter in GenerateRandomString())
         {
             var letterCube = letterGenerator.Generate(letter);
-            letterCube.position = new Vector3(lastXpos, lastYpos, 0f);
+            letterCube.position = Vector3.zero;
+            letterCube.rotation = Quaternion.identity;
             letterCubes.Add(letterCube);
-            lastXpos += space;
-
-            batchNumber++;
-            if (batchNumber == batchSize)
-            {
-                lastYpos -= space;
-                lastXpos = -margin;
-                batchNumber = 0;
-            }
         }
     }
 
     private string GenerateRandomString()
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, 64)
+        int numberOfLetters = random.Next(10, 20);
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return new string(Enumerable.Repeat(chars, (int)Mathf.Pow(numberOfLetters, 2))
             .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    private void SetLetterLayout()
+    {
+        var mainCamera = Camera.main;
+
+        float frustumHeight = 2.0f * mainCamera.orthographicSize;
+        float frustumWidth = frustumHeight * mainCamera.aspect;
+
+        // always want square grid
+        var maxColumnSize = (int)Mathf.Sqrt(letterCubes.Count);
+
+        float spacing = 0.05f;
+        GridLayout3D.SetLayout(letterCubes, frustumHeight, frustumWidth, maxColumnSize, spacing);
     }
 
 }

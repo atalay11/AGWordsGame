@@ -24,6 +24,13 @@ public class LetterSelectionChecker : MonoBehaviour
         public LetterCube letterCube;
     }
 
+    public EventHandler<OnSelectedWordChangedEventArgs> OnSelectedWordChanged;
+
+    public class OnSelectedWordChangedEventArgs : EventArgs
+    {
+        public string word;
+    }
+
     // variables
 
     LetterCube originLetterCube; // first selected cube
@@ -96,6 +103,8 @@ public class LetterSelectionChecker : MonoBehaviour
             var curSelectedPos = e.letterCube.transform.position;
             var selectDistance = Vector3.Distance(origin, curSelectedPos);
 
+
+            string selectedWord = originLetterCube.GetLetter().ToString() + directionLetterCube.GetLetter().ToString();
             foreach (var selectableLetterCube in selectableLetterCubes)
             {
                 var curDistance = Vector3.Distance(origin, selectableLetterCube.transform.position);
@@ -103,17 +112,18 @@ public class LetterSelectionChecker : MonoBehaviour
                 if (curDistance <= selectDistance)
                 {
                     // here is the selected
-                    // Debug.Log($"selected: {letterCube.GetLetter()}");
+                    selectedWord += selectableLetterCube.GetLetter();
                     OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = selectableLetterCube });
-
                 }
                 else
                 {
                     // here is the selectable
-                    // Debug.Log($"selectable: {letterCube.GetLetter()}");
                     OnLetterSelectable?.Invoke(this, new OnLetterSelectableEventArgs { letterCube = selectableLetterCube });
                 }
             }
+
+            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord });
+
         }
     }
 
