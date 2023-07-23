@@ -10,7 +10,6 @@ public class Omer : MonoBehaviour
     List<Transform> letterCubes;
     float timePassedWordCreation = wordCreationInterval + 1f; // words are generated at game start
 
-
     const float wordCreationInterval = 2f;
     System.Random random; // lol
 
@@ -18,6 +17,8 @@ public class Omer : MonoBehaviour
     {
         letterCubes = new List<Transform>();
         random = new System.Random();
+
+        CoreWordnet.Initilize();
     }
 
     private void Start()
