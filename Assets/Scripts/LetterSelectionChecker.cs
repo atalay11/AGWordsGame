@@ -89,6 +89,7 @@ public class LetterSelectionChecker : MonoBehaviour
         }
 
         var hits = Physics.RaycastAll(origin, bestDirectionVector, bestProduct);
+        System.Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
 
         foreach (var hit in hits)
         {
