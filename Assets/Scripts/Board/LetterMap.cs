@@ -17,6 +17,12 @@ public class LetterMap : MonoBehaviour
     private float m_ElementScaling;
     private float m_ElementSpacing;
 
+    public void ResetWithNewEdgeLength(int newEdgeLenght)
+    {
+        edgeLength = newEdgeLenght;
+        ResetLetters();
+    }
+
     // Return false if no such toLocation
     public bool SetLetter(Letter<char> letter, LetterLocation toLocation)
     {
@@ -62,8 +68,27 @@ public class LetterMap : MonoBehaviour
     
     private void Awake()
     {
+        ResetLetters();
+    }
+
+    private void ResetLetters()
+    {
+        ClearLetterMap();
         SetElementScalingAndSpacing();
         InitLetterMap();
+    }
+
+    private void ClearLetterMap()
+    {
+        if (m_LetterMap == null)
+            return;
+        
+        foreach(var transform in m_LetterMap.Values)
+        {
+            Destroy(transform.gameObject);
+        }
+    
+        m_LetterMap.Clear();
     }
 
     private (float, float) GetFrustumHeightAndWidth()
@@ -117,10 +142,10 @@ public class LetterMap : MonoBehaviour
 
     private void AdjustRandomLetterPositions()
     {
-        foreach (KeyValuePair<LetterLocation, Transform> positionLetterCubeKeyVal in m_LetterMap)
+        foreach (KeyValuePair<LetterLocation, Transform> locationLetterCubeKeyVal in m_LetterMap)
         {
-            var location = positionLetterCubeKeyVal.Key;
-            var letterCube = positionLetterCubeKeyVal.Value;
+            var location = locationLetterCubeKeyVal.Key;
+            var letterCube = locationLetterCubeKeyVal.Value;
 
             SetLetterModelPosition(letterCube, location);
         }

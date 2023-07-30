@@ -4,13 +4,34 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
-public class CoreWordnet
+public class WordDatabase : MonoBehaviour
 {
-    static HashSet<string> adjs;
-    static HashSet<string> nouns;
-    static HashSet<string> verbs;
+    public enum WordType : int
+    {
+        Adj,
+        Noun,
+        Verb,
+        WordTypeNB
+    }
 
-    public static void Initilize()
+    public static WordDatabase Instance { get; private set; }
+
+    private void Awake()
+    {
+        // If an instance already exists, destroy the newly created one.
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogError("WordDatabase is singleton but tried to be set more than once.");
+            return;
+        }
+
+        // Set the instance to this object if it's null.
+        Instance = this;
+        Initialize();
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void Initialize()
     {
         adjs = new HashSet<string>();
         nouns = new HashSet<string>();
@@ -24,25 +45,26 @@ public class CoreWordnet
         Debug.Log($"verbs {verbs.Count}");
     }
 
-    private static void ReadCoreWordnet(TextAsset csvFile)
+    public string GetRandomWord()
     {
-        // First row is consist of column names 
-        string[] lines = csvFile.text.Split('\n').Skip(1).ToArray(); ; // Split the file into lines
+        // Randomly select word type
+        WordType wordType = (WordType)m_Random.Next((int)WordType.WordTypeNB);
 
-        foreach (string line in lines)
+        if (wordType == WordType.Adj)
         {
-            string[] values = line.Split(','); // Split the line into values
-
-            var form = values[0];
-            var word = values[1];
-
-            if (form == "a")
-                adjs.Add(word);
-            else if (form == "n")
-                nouns.Add(word);
-            else if (form == "v")
-                verbs.Add(word);
-
+            return adjs.ElementAt(m_Random.Next(adjs.Count));
+        }
+        else if (wordType == WordType.Noun)
+        {
+            return nouns.ElementAt(m_Random.Next(nouns.Count));
+        }
+        else if (wordType == WordType.Verb)
+        {
+            return verbs.ElementAt(m_Random.Next(verbs.Count));
+        }
+        else
+        {
+            throw new System.NotImplementedException($"wordType: `{wordType}` is not implemented yet.");
         }
     }
 
@@ -61,4 +83,32 @@ public class CoreWordnet
         return verbs;
     }
 
+
+    private static void ReadCoreWordnet(TextAsset csvFile)
+    {
+        // First row is consist of column names 
+        string[] lines = csvFile.text.Split('\n').Skip(1).ToArray(); ; // Split the file into lines
+
+        foreach (string line in lines)
+        {
+            string[] values = line.Split(','); // Split the line into values
+
+            var form = values[0];
+            var word = values[1].Trim().ToUpper();
+
+            if (form == "a")
+                adjs.Add(word);
+            else if (form == "n")
+                nouns.Add(word);
+            else if (form == "v")
+                verbs.Add(word);
+
+        }
+    }
+
+    private static HashSet<string> adjs;
+    private static HashSet<string> nouns;
+    private static HashSet<string> verbs;
+
+    private readonly System.Random m_Random = new System.Random();
 }

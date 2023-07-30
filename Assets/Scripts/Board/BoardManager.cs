@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,17 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] private GameObject letterMap;
+    [SerializeField] private GameObject wordDatabase;
+
+    EventHandler OnWordSelectedEvent;
+
+    public void NewBoard(int edgeLength)
+    {
+        letterMap.GetComponent<LetterMap>().ResetWithNewEdgeLength(edgeLength);
+    }
 
     private void Awake()
     {
-        CoreWordnet.Initilize();
     }
 
     private void Start()
@@ -18,25 +26,29 @@ public class BoardManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            var fromLoc = new LetterLocation(0, 2);
-            letterMap.GetComponent<LetterMap>().SetWord("TEST_A", fromLoc, Direction.UpperRight);
-        }
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             var fromLoc = new LetterLocation(0, 3);
-            letterMap.GetComponent<LetterMap>().SetWord("0000000000", fromLoc, Direction.Right);
+            
+            string randomWord;
+            do 
+            {
+               randomWord = wordDatabase.GetComponent<WordDatabase>().GetRandomWord();
+            }
+            while (randomWord.Length > 10);
+            
+            letterMap.GetComponent<LetterMap>().SetWord(randomWord, fromLoc, Direction.Right);
         }
-        if (Input.GetKeyDown(KeyCode.C))
+
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            var fromLoc = new LetterLocation(7, 7);
-            letterMap.GetComponent<LetterMap>().SetWord("TEST_C", fromLoc, Direction.DownLeft);
+            NewBoard(20);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            var fromLoc = new LetterLocation(6, 2);
-            letterMap.GetComponent<LetterMap>().SetWord("TEST_D", fromLoc, Direction.Left);
+            NewBoard(15);
         }
     }
 }
