@@ -101,7 +101,8 @@ public class LetterSelectionChecker : MonoBehaviour
         }
         
         const float maxHitDist = 100f;
-        var hits = Physics.RaycastAll(origin, bestDirection, maxHitDist);
+        var hits = Physics.RaycastAll(origin, bestDirection, maxHitDist);            
+        System.Array.Sort(hits, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
         
         foreach (var hit in hits)
         {
