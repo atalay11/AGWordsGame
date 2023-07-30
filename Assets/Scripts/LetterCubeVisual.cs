@@ -16,7 +16,9 @@ public class LetterCubeVisual : MonoBehaviour
         startColor = material.color;
 
         LetterSelectionChecker.Instance.OnLetterSelected += LetterSelectionChecker_OnLetterSelected;
+        LetterSelectionChecker.Instance.OnLetterUnSelected += LetterSelectionChecker_OnLetterUnSelected;
         LetterSelectionChecker.Instance.OnLetterSelectable += LetterSelectionChecker_OnLetterSelectable;
+        
         GameInput.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
     }
 
@@ -26,6 +28,15 @@ public class LetterCubeVisual : MonoBehaviour
         {
             // what to do on select
             material.color = Color.blue;
+        }
+    }
+
+    private void LetterSelectionChecker_OnLetterUnSelected(object sender, LetterSelectionChecker.OnLetterUnSelectedEventArgs e)
+    {
+        if (letterCube == e.letterCube)
+        {
+            // what to do on select
+            material.color = startColor;
         }
     }
 
