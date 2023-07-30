@@ -22,38 +22,21 @@ public class LetterSelectionChecker : MonoBehaviour
         public LetterCube letterCube;
     }
 
-    public EventHandler<OnLetterSelectableEventArgs> OnLetterSelectable;
-
-    public class OnLetterSelectableEventArgs : EventArgs
-    {
-        public LetterCube letterCube;
-    }
-
     public EventHandler<OnSelectedWordChangedEventArgs> OnSelectedWordChanged;
 
     public class OnSelectedWordChangedEventArgs : EventArgs
     {
         public string word;
+        public LetterCube firstLetterCube;
+        public Direction direction;
     }
 
     // variables
 
     LetterCube originLetterCube; // first selected cube
-    LetterCube directionLetterCube; // second selected cube
-    List<LetterCube> selectableLetterCubes; // * We should remove this
     List<LetterCube> selectedLetterCubes;
     List<LetterCube> currentLetterCubes;
-
-    Vector3[] mainDirections = {
-        new Vector3(0 , 1, 0).normalized,
-        new Vector3(0 ,-1, 0).normalized,
-        new Vector3(1 , 0, 0).normalized,
-        new Vector3(-1, 0, 0).normalized,
-        new Vector3(1 , 1, 0).normalized,
-        new Vector3(-1,-1, 0).normalized,
-        new Vector3(1 ,-1, 0).normalized,
-        new Vector3(-1, 1, 0).normalized,
-    };
+    Direction wordDirection = Direction.Unknown;
 
     private void Awake()
     {
@@ -64,7 +47,6 @@ public class LetterSelectionChecker : MonoBehaviour
 
         Instance = this;
 
-        selectableLetterCubes = new List<LetterCube>();
         selectedLetterCubes = new List<LetterCube>();
         currentLetterCubes = new List<LetterCube>();
     }
@@ -88,55 +70,66 @@ public class LetterSelectionChecker : MonoBehaviour
 
         var origin = originLetterCube.transform.position;
         var dest = e.letterCube.transform.position;
-        var playerDirection = (dest - origin);
+        Vector2 playerDirection = (dest - origin);
 
-        Vector3 bestDirection = Vector3.zero;
+        Direction bestDirection = Direction.Unknown; // Add Direction some Unknown Direction
+        Vector2 bestDirectionVector = Vector2.zero;
         float bestProduct = 0; // Actually distance
-        foreach (var direction in mainDirections){
-            var dotProduct = Vector3.Dot(direction, playerDirection);
-            if(dotProduct > bestProduct){
-                bestDirection = direction;
+        foreach (var entry in BoardDirection.directionMappings)
+        {
+            Vector2 normalizedDirectionVector = entry.Value;
+            normalizedDirectionVector = normalizedDirectionVector.normalized;
+            var dotProduct = Vector2.Dot(normalizedDirectionVector, playerDirection);
+            if (dotProduct > bestProduct)
+            {
+                bestDirection = entry.Key;
+                bestDirectionVector = normalizedDirectionVector;
                 bestProduct = dotProduct;
             }
         }
-        
-        const float maxHitDist = 100f;
-        var hits = Physics.RaycastAll(origin, bestDirection, maxHitDist);
-        
+
+        var hits = Physics.RaycastAll(origin, bestDirectionVector, bestProduct);
+
         foreach (var hit in hits)
         {
-            if(hit.transform.TryGetComponent<LetterCube>(out LetterCube letterCube)){
-                var curDistance = Vector3.Distance(origin, letterCube.transform.position);
-                if(curDistance <= bestProduct){
+            if (hit.transform.TryGetComponent<LetterCube>(out LetterCube letterCube))
+            {
+                var curDistance = Vector2.Distance(origin, letterCube.transform.position);
+                if (curDistance <= bestProduct)
+                {
                     currentLetterCubes.Add(letterCube);
                     OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = letterCube });
                 }
             }
         }
 
-        foreach (var selectedLetterCube in selectedLetterCubes){
-            if(!currentLetterCubes.Contains(selectedLetterCube)){
+        foreach (var selectedLetterCube in selectedLetterCubes)
+        {
+            if (!currentLetterCubes.Contains(selectedLetterCube))
+            {
                 OnLetterUnSelected?.Invoke(this, new OnLetterUnSelectedEventArgs { letterCube = selectedLetterCube });
             }
         }
-        
+
         selectedLetterCubes = new List<LetterCube>(currentLetterCubes);
         currentLetterCubes.Clear();
+        wordDirection = bestDirection;
     }
 
     private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
     {
-        if(originLetterCube != null){
+        if (originLetterCube != null)
+        {
             string selectedWord = originLetterCube.GetLetter().ToString();
-            foreach (var selectedLetterCube in selectedLetterCubes){
+            foreach (var selectedLetterCube in selectedLetterCubes)
+            {
                 selectedWord += selectedLetterCube.GetLetter();
             }
             // ! not OnSelectedWordChangedEventArgs because release action send word to dictionary
-            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord });
+            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord, firstLetterCube = originLetterCube, direction = wordDirection });
         }
-        
+
         originLetterCube = null;
-        selectableLetterCubes.Clear();
         selectedLetterCubes.Clear();
     }
 }
