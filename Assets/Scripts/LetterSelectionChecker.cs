@@ -16,6 +16,11 @@ public class LetterSelectionChecker : MonoBehaviour
         public LetterCube letterCube;
     }
 
+    public EventHandler<OnLetterUnSelectedEventArgs> OnLetterUnSelected;
+    public class OnLetterUnSelectedEventArgs : EventArgs
+    {
+        public LetterCube letterCube;
+    }
 
     public EventHandler<OnLetterSelectableEventArgs> OnLetterSelectable;
 
@@ -35,7 +40,20 @@ public class LetterSelectionChecker : MonoBehaviour
 
     LetterCube originLetterCube; // first selected cube
     LetterCube directionLetterCube; // second selected cube
-    List<LetterCube> selectableLetterCubes;
+    List<LetterCube> selectableLetterCubes; // * We should remove this
+    List<LetterCube> selectedLetterCubes;
+    List<LetterCube> currentLetterCubes;
+
+    Vector3[] mainDirections = {
+        new Vector3(0 , 1, 0).normalized,
+        new Vector3(0 ,-1, 0).normalized,
+        new Vector3(1 , 0, 0).normalized,
+        new Vector3(-1, 0, 0).normalized,
+        new Vector3(1 , 1, 0).normalized,
+        new Vector3(-1,-1, 0).normalized,
+        new Vector3(1 ,-1, 0).normalized,
+        new Vector3(-1, 1, 0).normalized,
+    };
 
     private void Awake()
     {
@@ -47,11 +65,12 @@ public class LetterSelectionChecker : MonoBehaviour
         Instance = this;
 
         selectableLetterCubes = new List<LetterCube>();
+        selectedLetterCubes = new List<LetterCube>();
+        currentLetterCubes = new List<LetterCube>();
     }
 
     private void Start()
     {
-
         GameInput.Instance.OnLetterLayerSelectAction += GameInput_OnLetterLayerSelectAction;
         GameInput.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
     }
@@ -60,77 +79,64 @@ public class LetterSelectionChecker : MonoBehaviour
     {
         if (originLetterCube == null)
         {
-            Debug.Log("Setting original");
             originLetterCube = e.letterCube;
             OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = e.letterCube });
         }
 
-        if (directionLetterCube == null)
+        if (e.letterCube == originLetterCube)
+            return;
+
+        var origin = originLetterCube.transform.position;
+        var dest = e.letterCube.transform.position;
+        var playerDirection = (dest - origin);
+
+        Vector3 bestDirection = Vector3.zero;
+        float bestProduct = 0; // Actually distance
+        foreach (var direction in mainDirections){
+            var dotProduct = Vector3.Dot(direction, playerDirection);
+            if(dotProduct > bestProduct){
+                bestDirection = direction;
+                bestProduct = dotProduct;
+            }
+        }
+        
+        const float maxHitDist = 100f;
+        var hits = Physics.RaycastAll(origin, bestDirection, maxHitDist);
+        
+        foreach (var hit in hits)
         {
-            if (e.letterCube == originLetterCube)
-                return;
-
-            Debug.Log("Setting directional");
-            directionLetterCube = e.letterCube;
-            OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = directionLetterCube });
-
-            // set direction and selectable cubes
-            var origin = originLetterCube.transform.position;
-            var dest = directionLetterCube.transform.position;
-            var direction = (dest - origin).normalized;
-
-            const float maxHitDist = 100f;
-            var hits = Physics.RaycastAll(dest, direction, maxHitDist);
-
-            foreach (var hit in hits)
-            {
-                if (hit.transform.TryGetComponent<LetterCube>(out LetterCube letterCube))
-                {
-                    selectableLetterCubes.Add(letterCube);
-                    OnLetterSelectable?.Invoke(this, new OnLetterSelectableEventArgs { letterCube = letterCube });
+            if(hit.transform.TryGetComponent<LetterCube>(out LetterCube letterCube)){
+                var curDistance = Vector3.Distance(origin, letterCube.transform.position);
+                if(curDistance <= bestProduct){
+                    currentLetterCubes.Add(letterCube);
+                    OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = letterCube });
                 }
             }
         }
 
-        if (e.letterCube == originLetterCube ||
-            e.letterCube == directionLetterCube ||
-            selectableLetterCubes.Contains(e.letterCube)
-        )
-        {
-            var origin = originLetterCube.transform.position;
-
-            // if distance is between this range it is selected
-            var curSelectedPos = e.letterCube.transform.position;
-            var selectDistance = Vector3.Distance(origin, curSelectedPos);
-
-
-            string selectedWord = originLetterCube.GetLetter().ToString() + directionLetterCube.GetLetter().ToString();
-            foreach (var selectableLetterCube in selectableLetterCubes)
-            {
-                var curDistance = Vector3.Distance(origin, selectableLetterCube.transform.position);
-
-                if (curDistance <= selectDistance)
-                {
-                    // here is the selected
-                    selectedWord += selectableLetterCube.GetLetter();
-                    OnLetterSelected?.Invoke(this, new OnLetterSelectedEventArgs { letterCube = selectableLetterCube });
-                }
-                else
-                {
-                    // here is the selectable
-                    OnLetterSelectable?.Invoke(this, new OnLetterSelectableEventArgs { letterCube = selectableLetterCube });
-                }
+        foreach (var selectedLetterCube in selectedLetterCubes){
+            if(!currentLetterCubes.Contains(selectedLetterCube)){
+                OnLetterUnSelected?.Invoke(this, new OnLetterUnSelectedEventArgs { letterCube = selectedLetterCube });
             }
-
-            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord });
-
         }
+        
+        selectedLetterCubes = new List<LetterCube>(currentLetterCubes);
+        currentLetterCubes.Clear();
     }
 
     private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
     {
+        if(originLetterCube != null){
+            string selectedWord = originLetterCube.GetLetter().ToString();
+            foreach (var selectedLetterCube in selectedLetterCubes){
+                selectedWord += selectedLetterCube.GetLetter();
+            }
+            // ! not OnSelectedWordChangedEventArgs because release action send word to dictionary
+            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord });
+        }
+        
         originLetterCube = null;
-        directionLetterCube = null;
         selectableLetterCubes.Clear();
+        selectedLetterCubes.Clear();
     }
 }
