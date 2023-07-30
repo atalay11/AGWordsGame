@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 
-public class LetterMap : MonoBehaviour
+public class Board : MonoBehaviour
 {
     [SerializeField] private LetterGenerator letterGenerator;
     [SerializeField] private int edgeLength = 10; // board size will be -> edgeLength - edgeLength (width - height)
@@ -32,6 +32,35 @@ public class LetterMap : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public bool DoesWordOverlap(string word, LetterCube letterCube, Direction toDirection)
+    {
+        LetterLocation? fromLocation = m_LetterMap.FirstOrDefault(x => x.Value.Equals(letterCube.transform)).Key;
+        if (!fromLocation.HasValue)
+        {
+            Debug.LogError($"letterCube can not be located!");
+            return false;
+        }
+
+        var directionVec = BoardDirection.GetVector(toDirection);
+        if (!CheckSetWordInputsValid(fromLocation.Value, directionVec, word.Length))
+        {
+            Debug.LogError($"SetWord inputs are invalid. fromLoc: `({fromLocation.Value.column}, {fromLocation.Value.row})`, word: `{word}`, directionVec: `{directionVec}`");
+            return false;
+        }
+
+        var locationCursor = fromLocation.Value;
+        foreach (char ch in word)
+        {
+            var transform = m_LetterMap[locationCursor];
+            char letter = transform.GetComponent<LetterCube>().GetLetter();
+            if (letter != ch)
+                return false;
+            locationCursor += directionVec;
+        }
+
+        return true;
     }
 
     public bool SetWord(string word, LetterLocation fromLocation, Direction toDirection)

@@ -6,39 +6,37 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    [SerializeField] private GameObject letterMap;
-    [SerializeField] private GameObject wordDatabase;
-
-    EventHandler OnWordSelectedEvent;
+    [SerializeField] private GameObject board;
+    [SerializeField] private GameObject letterSelectionChecker;
 
     public void NewBoard(int edgeLength)
     {
-        letterMap.GetComponent<LetterMap>().ResetWithNewEdgeLength(edgeLength);
-    }
-
-    private void Awake()
-    {
+        board.GetComponent<Board>().ResetWithNewEdgeLength(edgeLength);
     }
 
     private void Start()
     {
+        letterSelectionChecker.GetComponent<LetterSelectionChecker>().OnWordSelected += LetterSelectionChecker_OnWordSelected;
+    }
+
+    private void LetterSelectionChecker_OnWordSelected(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
+    {
+        // Extra check, this might be unnecessary
+        bool overlaps = board.GetComponent<Board>().DoesWordOverlap(e.word, e.firstLetterCube, e.direction); 
     }
 
     private void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.B))
         {
-            var fromLoc = new LetterLocation(0, 3);
-            
             string randomWord;
             do 
             {
-               randomWord = wordDatabase.GetComponent<WordDatabase>().GetRandomWord();
+               randomWord = WordDatabase.Instance.GetRandomWord();
             }
             while (randomWord.Length > 10);
             
-            letterMap.GetComponent<LetterMap>().SetWord(randomWord, fromLoc, Direction.Right);
+            board.GetComponent<Board>().SetWord(randomWord, new LetterLocation(0, 3), Direction.Right);
         }
 
         if (Input.GetKeyDown(KeyCode.O))

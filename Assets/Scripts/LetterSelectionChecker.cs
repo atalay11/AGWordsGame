@@ -22,9 +22,9 @@ public class LetterSelectionChecker : MonoBehaviour
         public LetterCube letterCube;
     }
 
-    public EventHandler<OnSelectedWordChangedEventArgs> OnSelectedWordChanged;
+    public EventHandler<OnWordSelectedEventArgs> OnWordSelected;
 
-    public class OnSelectedWordChangedEventArgs : EventArgs
+    public class OnWordSelectedEventArgs : EventArgs
     {
         public string word;
         public LetterCube firstLetterCube;
@@ -126,8 +126,8 @@ public class LetterSelectionChecker : MonoBehaviour
             {
                 selectedWord += selectedLetterCube.GetLetter();
             }
-            // ! not OnSelectedWordChangedEventArgs because release action send word to dictionary
-            OnSelectedWordChanged?.Invoke(this, new OnSelectedWordChangedEventArgs { word = selectedWord, firstLetterCube = originLetterCube, direction = wordDirection });
+            // ! not OnWordSelectedEventArgs because release action send word to dictionary
+            OnWordSelected?.Invoke(this, new OnWordSelectedEventArgs { word = selectedWord, firstLetterCube = originLetterCube, direction = wordDirection });
         }
 
         originLetterCube = null;

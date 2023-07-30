@@ -17,18 +17,11 @@ public class SelectedWordText : MonoBehaviour
 
     private void Start()
     {
-        LetterSelectionChecker.Instance.OnSelectedWordChanged += LetterSelectionChecker_OnSelectedWordChanged;
-        GameInput.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
+        LetterSelectionChecker.Instance.OnWordSelected += LetterSelectionChecker_OnSelectedWordChanged;
     }
 
-    private void LetterSelectionChecker_OnSelectedWordChanged(object sender, LetterSelectionChecker.OnSelectedWordChangedEventArgs e)
+    private void LetterSelectionChecker_OnSelectedWordChanged(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
     {
         tmpText.text = e.word;
     }
-
-    private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
-    {
-        tmpText.text = "";
-    }
-
 }
