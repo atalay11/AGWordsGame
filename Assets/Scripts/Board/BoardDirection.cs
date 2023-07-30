@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum Direction
 {
+    Unknown,
     Up,
     Down,
     Right,
@@ -16,7 +17,7 @@ public enum Direction
 
 public static class BoardDirection
 {
-    private static readonly Dictionary<Direction, Vector2Int> directionMappings = new Dictionary<Direction, Vector2Int>
+    public static readonly Dictionary<Direction, Vector2Int> directionMappings = new Dictionary<Direction, Vector2Int>
     {
         { Direction.Up, new Vector2Int(0, 1) },
         { Direction.Down, new Vector2Int(0, -1) },
