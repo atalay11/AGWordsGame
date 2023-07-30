@@ -129,8 +129,8 @@ public class LetterMap : MonoBehaviour
     private void SetLetterModelPosition(Transform letterCube, LetterLocation location)
     {
         Vector3 origin = new Vector3(
-            (float)m_ElementSpacing * edgeLength / 2,
-            (float)m_ElementSpacing * edgeLength / 2,
+            (float)m_ElementSpacing * (edgeLength - 1) / 2,
+            (float)m_ElementSpacing * (edgeLength - 1) / 2,
             0f);
 
         float xPos = (float)m_ElementSpacing * location.column - origin.x;
