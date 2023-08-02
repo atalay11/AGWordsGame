@@ -377,7 +377,7 @@ GameObject:
   - component: {fileID: 905168102}
   - component: {fileID: 905168101}
   m_Layer: 0
-  m_Name: LetterMap
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38446dcce28ea5049a9edeff7398b484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  letterMap: {fileID: 905168100}
+  board: {fileID: 905168100}
   letterSelectionChecker: {fileID: 1721057759}
 --- !u!1 &1373082325
 GameObject:
