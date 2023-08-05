@@ -49,6 +49,7 @@ public class LetterSelectionChecker : MonoBehaviour
 
         selectedLetterCubes = new List<LetterCube>();
         currentLetterCubes = new List<LetterCube>();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -72,7 +73,7 @@ public class LetterSelectionChecker : MonoBehaviour
         var dest = e.letterCube.transform.position;
         Vector2 playerDirection = (dest - origin);
 
-        Direction bestDirection = Direction.Unknown; // Add Direction some Unknown Direction
+        Direction bestDirection = Direction.Unknown;
         Vector2 bestDirectionVector = Vector2.zero;
         float bestProduct = 0; // Actually distance
         foreach (var entry in BoardDirection.directionMappings)
@@ -126,7 +127,6 @@ public class LetterSelectionChecker : MonoBehaviour
             {
                 selectedWord += selectedLetterCube.GetLetter();
             }
-            // ! not OnWordSelectedEventArgs because release action send word to dictionary
             OnWordSelected?.Invoke(this, new OnWordSelectedEventArgs { word = selectedWord, firstLetterCube = originLetterCube, direction = wordDirection });
         }
 
