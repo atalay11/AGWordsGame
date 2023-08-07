@@ -21,6 +21,8 @@ public class BoardManager : MonoBehaviour
 
     private void LetterSelectionChecker_OnWordSelected(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
     {
+        if (e.direction == Direction.Unknown)
+            return;
         // Extra check, this might be unnecessary
         bool overlaps = board.GetComponent<Board>().DoesWordOverlap(e.word, e.firstLetterCube, e.direction); 
     }
