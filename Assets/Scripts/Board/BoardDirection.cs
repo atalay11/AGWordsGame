@@ -30,4 +30,15 @@ public static class BoardDirection
     };
 
     public static Vector2Int GetVector(Direction direction) => directionMappings[direction];
+
+    // public static Direction[] ValidDirectionArray = {
+    //     Direction.Up,
+    //     Direction.Down,
+    //     Direction.Right,
+    //     Direction.Left,
+    //     Direction.UpperRight,
+    //     Direction.UpperLeft,
+    //     Direction.DownRight,
+    //     Direction.DownLeft
+    // };
 }
