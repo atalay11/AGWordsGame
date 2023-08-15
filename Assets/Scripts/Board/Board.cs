@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 public class Board : MonoBehaviour
 {
     [SerializeField] private LetterGenerator letterGenerator;
+    [SerializeField] private Transform board;
     [SerializeField] private int edgeLength = 10; // board size will be -> edgeLength - edgeLength (width - height)
     [SerializeField] private float spacing = 0.05f;
 
@@ -92,9 +93,9 @@ public class Board : MonoBehaviour
     private bool CheckSetWordInputsValid(LetterLocation fromLocation, Vector2Int directionVec, int wordLength)
     {
         var toLocation = fromLocation + directionVec * (wordLength - 1);
-        return (m_LetterMap.ContainsKey(fromLocation) && m_LetterMap.ContainsKey(toLocation));     
+        return (m_LetterMap.ContainsKey(fromLocation) && m_LetterMap.ContainsKey(toLocation));
     }
-    
+
     private void Awake()
     {
         ResetLetters();
@@ -111,12 +112,12 @@ public class Board : MonoBehaviour
     {
         if (m_LetterMap == null)
             return;
-        
-        foreach(var transform in m_LetterMap.Values)
+
+        foreach (var transform in m_LetterMap.Values)
         {
             Destroy(transform.gameObject);
         }
-    
+
         m_LetterMap.Clear();
     }
 
@@ -162,8 +163,8 @@ public class Board : MonoBehaviour
             foreach (int row in Enumerable.Range(0, edgeLength))
             {
                 var randomLetter = Letter<char>.GenerateRandomLetter();
-                var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity);
-                LetterLocation location = new LetterLocation (col, row);
+                var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
+                LetterLocation location = new LetterLocation(col, row);
                 m_LetterMap.Add(location, letterCube);
             }
         }
