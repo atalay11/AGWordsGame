@@ -209,6 +209,14 @@ MonoBehaviour:
     m_Y: 0
     m_Width: 511
     m_Height: 511
+  - m_X: 0
+    m_Y: 188
+    m_Width: 511
+    m_Height: 323
+  - m_X: 29
+    m_Y: 94
+    m_Width: 482
+    m_Height: 417
   m_fontInfo:
     Name: Liberation Sans
     PointSize: 86
@@ -350,7 +358,7 @@ Texture2D:
   m_ColorSpace: 0
   m_PlatformBlob: 
   image data: 0
-  _typelessdata: 
+  _typelessdata:
   m_StreamData:
     serializedVersion: 2
     offset: 0
