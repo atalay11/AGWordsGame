@@ -12,15 +12,13 @@ public class LetterGenerator : MonoBehaviour
         var letterCube = newLetterCube.GetComponent<LetterCube>();
         letterCube.SetLetter(letter);
         return newLetterCube;
-    } 
-    
-    public Transform Generate(char letter, Vector3 position, Quaternion rotation)
+    }
+
+    public Transform Generate(char letter, Vector3 position, Quaternion rotation, Transform parent)
     {
-        var newLetterCube = Instantiate(letterPrefab);
+        var newLetterCube = Instantiate(letterPrefab, position, rotation, parent);
         var letterCube = newLetterCube.GetComponent<LetterCube>();
         letterCube.SetLetter(letter);
-        newLetterCube.position = position;
-        newLetterCube.rotation = rotation;
         return newLetterCube;
     }
 

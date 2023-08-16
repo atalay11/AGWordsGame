@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 public class Board : MonoBehaviour
 {
     [SerializeField] private LetterGenerator letterGenerator;
+    [SerializeField] private Transform board;
     [SerializeField] private int edgeLength = 10; // board size will be -> edgeLength - edgeLength (width - height)
     [SerializeField] private float spacing = 0.05f;
 
@@ -186,7 +187,8 @@ public class Board : MonoBehaviour
         {
             foreach (int row in Enumerable.Range(0, edgeLength))
             {
-                var letterCube = letterGenerator.Generate('?', Vector3.zero, Quaternion.identity);
+                var randomLetter = Letter<char>.GenerateRandomLetter();
+                var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
                 LetterLocation location = new LetterLocation(col, row);
                 m_LetterMap.Add(location, letterCube);
             }
