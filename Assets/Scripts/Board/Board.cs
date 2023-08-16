@@ -18,9 +18,9 @@ public class Board : MonoBehaviour
     private float m_ElementScaling;
     private float m_ElementSpacing;
 
-    public void ResetWithNewEdgeLength(int newEdgeLenght)
+    public void ResetWithNewEdgeLength(int newEdgeLength)
     {
-        edgeLength = newEdgeLenght;
+        edgeLength = newEdgeLength;
         ResetLetters();
     }
 
@@ -33,6 +33,12 @@ public class Board : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public char GetLetter(LetterLocation fromLocation)
+    {
+        var transform = m_LetterMap[fromLocation];
+        return transform.GetComponent<LetterCube>().GetLetter();
     }
 
     public bool DoesWordOverlap(string word, LetterCube letterCube, Direction toDirection)
@@ -66,7 +72,7 @@ public class Board : MonoBehaviour
 
     public bool SetWord(string word, LetterLocation fromLocation, Direction toDirection)
     {
-        if (string.IsNullOrEmpty(word))
+        if (string.IsNullOrEmpty(word) || toDirection == Direction.Unknown)
         {
             Debug.LogWarning($"word is null or empty.");
             return false;
@@ -75,25 +81,44 @@ public class Board : MonoBehaviour
         var directionVec = BoardDirection.GetVector(toDirection);
         if (!CheckSetWordInputsValid(fromLocation, directionVec, word.Length))
         {
-            Debug.LogWarning($"SetWord inputs are invalid. fromLoc: `({fromLocation.column}, {fromLocation.row})`, word: `{word}`, directionVec: `{directionVec}`");
             return false;
         }
 
         var locationCursor = fromLocation;
+        bool placeable = true;
+        foreach (char ch in word)
+        {
+            var letter = GetLetter(locationCursor);
+            placeable &= letter == '?' || ch == letter;
+            locationCursor += directionVec;
+        }
+
+        if (!placeable)
+        {
+            return false;
+        }
+
+        locationCursor = fromLocation;
         foreach (char ch in word)
         {
             bool success = SetLetter(new Letter<char>(ch), locationCursor);
-            Assert.IsTrue(success, "All letters must be set successfully if this code block is executed. Check if CheckSetWordInputsValid function works properly.");
             locationCursor += directionVec;
         }
 
         return true;
     }
 
+    public LetterLocation GenerateRandomLetterLocation()
+    {
+        return new LetterLocation(UnityEngine.Random.Range(0, edgeLength), UnityEngine.Random.Range(0, edgeLength));
+    }
+
     private bool CheckSetWordInputsValid(LetterLocation fromLocation, Vector2Int directionVec, int wordLength)
     {
         var toLocation = fromLocation + directionVec * (wordLength - 1);
         return (m_LetterMap.ContainsKey(fromLocation) && m_LetterMap.ContainsKey(toLocation));
+        // return toLocation.column >= 0 && toLocation.column < edgeLength
+        //     && toLocation.row >= 0 && toLocation.row < edgeLength;
     }
 
     private void Awake()
@@ -152,11 +177,11 @@ public class Board : MonoBehaviour
     private void InitLetterMap()
     {
         m_LetterMap = new Dictionary<LetterLocation, Transform>(edgeLength * edgeLength);
-        CreateRandomLetters();
+        InitializeBoard();
         AdjustRandomLetterPositions();
     }
 
-    private void CreateRandomLetters()
+    private void InitializeBoard()
     {
         foreach (int col in Enumerable.Range(0, edgeLength))
         {
@@ -166,6 +191,32 @@ public class Board : MonoBehaviour
                 var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
                 LetterLocation location = new LetterLocation(col, row);
                 m_LetterMap.Add(location, letterCube);
+            }
+        }
+    }
+
+    public void CleanBoard()
+    {
+        foreach (int col in Enumerable.Range(0, edgeLength))
+        {
+            foreach (int row in Enumerable.Range(0, edgeLength))
+            {
+                SetLetter(new Letter<char>('?'), new LetterLocation(col, row));
+            }
+        }
+    }
+
+    public void FillEmptyLetters()
+    {
+        foreach (int col in Enumerable.Range(0, edgeLength))
+        {
+            foreach (int row in Enumerable.Range(0, edgeLength))
+            {
+                var locationCursor = new LetterLocation(col, row);
+                if (GetLetter(locationCursor) == '?')
+                {
+                    SetLetter(Letter<char>.GenerateRandomLetter(), locationCursor);
+                }
             }
         }
     }
