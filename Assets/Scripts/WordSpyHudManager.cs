@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UI;
@@ -8,36 +10,46 @@ public class WordSpyHudManager : MonoBehaviour
 {
     [SerializeField] private Transform searchedWordPrefab;
     [SerializeField] private Transform hud;
+    [SerializeField] private BoardManager boardManager; // this is not singleton
 
-    private List<Transform> searchedWords;
+    private Dictionary<string, Transform> searchedWordDict;
 
     private void Awake()
     {
-        searchedWords = new List<Transform>();
+        searchedWordDict = new Dictionary<string, Transform>();
     }
 
-    void Start()
+    private void Start()
     {
-        string[] stringArr = {
-            "Interdependence",
-            "Instrumentation",
-            "Insubordination",
-            "Kindheartedness",
-            "Kinesthetically",
-            "Kaleidoscopical",
-            "Lightheadedness",
-            "Lackadaisically",
-            "Lexicographical",
-            "Misappreciation",
-            "Marginalization",
-            "Materialization"};
+        boardManager.OnSelectetWords += OnSelectedWords;
+        LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
+    }
 
-        foreach (var item in stringArr)
+    private void OnSelectedWords(object sender, BoardManager.OnSelectetWordsEventArgs e)
+    {
+        foreach (var (_, item) in searchedWordDict)
         {
-            var searchedWord = Instantiate(searchedWordPrefab, Vector3.zero, Quaternion.identity, hud);
-            searchedWord.GetComponent<SearchedWord>().SetWord(item);
-            searchedWords.Add(searchedWord);
+            Destroy(item.gameObject);
         }
 
+        searchedWordDict.Clear();
+
+
+        foreach (var word in e.selectedWords)
+        {
+            var searchedWordTransform = Instantiate(searchedWordPrefab, Vector3.zero, Quaternion.identity, hud);
+            searchedWordTransform.GetComponent<SearchedWord>().SetWord(word);
+            searchedWordDict[word] = searchedWordTransform;
+        }
     }
+
+    private void OnWordSelected(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
+    {
+        var searchedWord = searchedWordDict[e.word];
+        if (searchedWord != null)
+        {
+            searchedWord.GetComponent<SearchedWord>().Strikethrough(true);
+        }
+    }
+
 }

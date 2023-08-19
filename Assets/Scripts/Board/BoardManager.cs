@@ -11,6 +11,17 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private GameObject letterSelectionChecker;
     [SerializeField] private List<string> selectedWords = new List<string>();
     private System.Random _random = new System.Random();
+
+    // Later move below this to level manager or something
+
+    public EventHandler<OnSelectetWordsEventArgs> OnSelectetWords;
+    public class OnSelectetWordsEventArgs : EventArgs
+    {
+        public List<string> selectedWords;
+    }
+
+    //*******
+
     public void NewBoard(int edgeLength)
     {
         board.GetComponent<Board>().ResetWithNewEdgeLength(edgeLength);
@@ -54,7 +65,14 @@ public class BoardManager : MonoBehaviour
             words.Add(randomWord);
         }
 
+        UpdateSelectedWordListeners(words);
+
         return UpdateBoardWords(words);
+    }
+
+    private void UpdateSelectedWordListeners(List<string> words)
+    {
+        OnSelectetWords?.Invoke(this, new OnSelectetWordsEventArgs { selectedWords = words });
     }
 
 
