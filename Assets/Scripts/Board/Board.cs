@@ -12,6 +12,7 @@ public class Board : MonoBehaviour
     [SerializeField] private Transform board;
     [SerializeField] private int edgeLength = 10; // board size will be -> edgeLength - edgeLength (width - height)
     [SerializeField] private float spacing = 0.05f;
+    [SerializeField] private float boardUp = 0.0f;
 
     // 0, 0 is bottom-left
     private Dictionary<LetterLocation, Transform> m_LetterMap;
@@ -238,6 +239,8 @@ public class Board : MonoBehaviour
             (float)m_ElementSpacing * (edgeLength - 1) / 2,
             (float)m_ElementSpacing * (edgeLength - 1) / 2,
             0f);
+
+        origin.y += boardUp;
 
         float xPos = (float)m_ElementSpacing * location.column - origin.x;
         float yPos = (float)m_ElementSpacing * location.row - origin.y;
