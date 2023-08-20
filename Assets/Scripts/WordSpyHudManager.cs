@@ -45,9 +45,9 @@ public class WordSpyHudManager : MonoBehaviour
 
     private void OnWordSelected(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
     {
-        var searchedWord = searchedWordDict[e.word];
-        if (searchedWord != null)
+        if (searchedWordDict.ContainsKey(e.word))
         {
+            var searchedWord = searchedWordDict[e.word];
             searchedWord.GetComponent<SearchedWord>().Strikethrough(true);
         }
     }
