@@ -26,7 +26,7 @@ public class Board : MonoBehaviour
     }
 
     // Return false if no such toLocation
-    public bool SetLetter(Letter<char> letter, LetterLocation toLocation)
+    public bool SetLetter(char letter, LetterLocation toLocation)
     {
         if (m_LetterMap.TryGetValue(toLocation, out Transform letterCubeTransform))
         {
@@ -102,7 +102,7 @@ public class Board : MonoBehaviour
         locationCursor = fromLocation;
         foreach (char ch in word)
         {
-            bool success = SetLetter(new Letter<char>(ch), locationCursor);
+            bool success = SetLetter(ch, locationCursor);
             locationCursor += directionVec;
         }
 
@@ -188,7 +188,7 @@ public class Board : MonoBehaviour
         {
             foreach (int row in Enumerable.Range(0, edgeLength))
             {
-                var randomLetter = Letter<char>.GenerateRandomLetter();
+                var randomLetter = LetterUtils.Instance.GenerateRandomLetter();
                 var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
                 LetterLocation location = new LetterLocation(col, row);
                 m_LetterMap.Add(location, letterCube);
@@ -202,7 +202,7 @@ public class Board : MonoBehaviour
         {
             foreach (int row in Enumerable.Range(0, edgeLength))
             {
-                SetLetter(new Letter<char>('?'), new LetterLocation(col, row));
+                SetLetter('?', new LetterLocation(col, row));
             }
         }
     }
@@ -216,7 +216,7 @@ public class Board : MonoBehaviour
                 var locationCursor = new LetterLocation(col, row);
                 if (GetLetter(locationCursor) == '?')
                 {
-                    SetLetter(Letter<char>.GenerateRandomLetter(), locationCursor);
+                    SetLetter(LetterUtils.Instance.GenerateRandomLetter(), locationCursor);
                 }
             }
         }

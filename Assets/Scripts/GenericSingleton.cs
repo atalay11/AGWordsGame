@@ -3,6 +3,8 @@ using UnityEngine;
 // <> denotes this is a generic class
 public class GenericSingleton<T> : MonoBehaviour where T : Component
 {
+    [SerializeField] private bool persistAcrossScenes;
+    
     // create a private reference to T instance
     private static T instance;
 
@@ -29,17 +31,24 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
         }
     }
 
-    protected virtual void Awake()
+    private void Awake()
     {
         // create the instance
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(this.gameObject);
+            if (persistAcrossScenes)
+            {
+                DontDestroyOnLoad(this.gameObject);
+            }
         }
         else
         {
             Destroy(gameObject);
         }
+
+        AwakeImpl();
     }
+
+    protected virtual void AwakeImpl() {}
 }
