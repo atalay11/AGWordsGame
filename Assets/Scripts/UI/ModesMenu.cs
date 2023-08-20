@@ -6,6 +6,12 @@ public class ModesMenu : MonoBehaviour
 {
     public void OnPlayButtonPressed()
     {
-        SceneLoader.LoadPlayScene();
+        SceneLoader.LoadWordSpyScene();
+    }
+
+    public void OnBackIconButtonPressed()
+    {
+        Debug.Log("Load Main Menu Scene");
+        SceneLoader.LoadMainMenuScene();
     }
 }
