@@ -17,12 +17,15 @@ public class WordSpyHudManager : MonoBehaviour
     private void Awake()
     {
         searchedWordDict = new Dictionary<string, Transform>();
+
+        boardManager.OnSelectetWords += OnSelectedWords;
+        LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
     }
 
     private void Start()
     {
-        boardManager.OnSelectetWords += OnSelectedWords;
-        LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
+        // boardManager.OnSelectetWords += OnSelectedWords;
+        // LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
     }
 
     private void OnSelectedWords(object sender, BoardManager.OnSelectetWordsEventArgs e)
@@ -45,9 +48,9 @@ public class WordSpyHudManager : MonoBehaviour
 
     private void OnWordSelected(object sender, LetterSelectionChecker.OnWordSelectedEventArgs e)
     {
-        var searchedWord = searchedWordDict[e.word];
-        if (searchedWord != null)
+        if (searchedWordDict.ContainsKey(e.word))
         {
+            var searchedWord = searchedWordDict[e.word];
             searchedWord.GetComponent<SearchedWord>().Strikethrough(true);
         }
     }
