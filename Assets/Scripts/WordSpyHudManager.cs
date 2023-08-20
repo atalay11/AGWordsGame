@@ -17,12 +17,15 @@ public class WordSpyHudManager : MonoBehaviour
     private void Awake()
     {
         searchedWordDict = new Dictionary<string, Transform>();
+
+        boardManager.OnSelectetWords += OnSelectedWords;
+        LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
     }
 
     private void Start()
     {
-        boardManager.OnSelectetWords += OnSelectedWords;
-        LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
+        // boardManager.OnSelectetWords += OnSelectedWords;
+        // LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
     }
 
     private void OnSelectedWords(object sender, BoardManager.OnSelectetWordsEventArgs e)
