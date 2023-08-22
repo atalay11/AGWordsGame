@@ -3,11 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LetterSelectionChecker : MonoBehaviour
+public class LetterSelectionChecker : GenericSingleton<LetterSelectionChecker>
 {
-    // Singleton
-    public static LetterSelectionChecker Instance { get; private set; }
-
     // Events
     public EventHandler<OnLetterSelectedEventArgs> OnLetterSelected;
 
@@ -38,18 +35,10 @@ public class LetterSelectionChecker : MonoBehaviour
     List<LetterCube> currentLetterCubes;
     Direction wordDirection = Direction.Unknown;
 
-    private void Awake()
+    protected override void AwakeImpl()
     {
-        if (Instance != null)
-        {
-            Debug.LogError("GameInput is singleton but tried to be set more than once.");
-        }
-
-        Instance = this;
-
         selectedLetterCubes = new List<LetterCube>();
         currentLetterCubes = new List<LetterCube>();
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
