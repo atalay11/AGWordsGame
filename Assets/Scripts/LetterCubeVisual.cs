@@ -5,10 +5,18 @@ using UnityEngine;
 
 public class LetterCubeVisual : MonoBehaviour
 {
+    private readonly string OnSelect = "OnSelected";
+
     [SerializeField] private LetterCube letterCube;
 
     private Material material;
     private Color startColor;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -26,6 +34,9 @@ public class LetterCubeVisual : MonoBehaviour
         if (letterCube == e.letterCube)
         {
             // what to do on select
+            if (material.color != Color.blue)
+                PlayOnSelectedAnimation();
+
             material.color = Color.blue;
         }
     }
@@ -43,5 +54,16 @@ public class LetterCubeVisual : MonoBehaviour
     private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
     {
         material.color = startColor;
+    }
+
+    private void PlayOnSelectedAnimation()
+    {
+        // var isIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
+        // var isLetterCubeVisual = animator.GetCurrentAnimatorStateInfo(0).IsName("LetterCubeVisual");
+        // Debug.Log($"isIdle: {isIdle}");
+        // Debug.Log($"isLetterCubeVisual: {isLetterCubeVisual}");
+
+
+        animator.SetTrigger(OnSelect);
     }
 }

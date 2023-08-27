@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5925557409943398562}
   - component: {fileID: 5562341939557777892}
   - component: {fileID: 5220256742266658180}
+  - component: {fileID: 6130556306885630531}
   m_Layer: 6
   m_Name: LetterCube
   m_TagString: Untagged
@@ -25,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3675814389941680166}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,7 +34,6 @@ Transform:
   m_Children:
   - {fileID: 6863637984873953146}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5562341939557777892
 BoxCollider:
@@ -74,6 +75,27 @@ MonoBehaviour:
   - {fileID: 8260546797939327742}
   - {fileID: 3436613353137223429}
   - {fileID: 8498492378736491345}
+--- !u!95 &6130556306885630531
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675814389941680166}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e8f88fe102def914bb72f1dd2da4af3a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6736059873721957301
 PrefabInstance:
   m_ObjectHideFlags: 0
