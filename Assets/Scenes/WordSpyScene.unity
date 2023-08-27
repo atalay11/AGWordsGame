@@ -1121,7 +1121,7 @@ MonoBehaviour:
   letterGenerator: {fileID: 2020205224}
   board: {fileID: 0}
   spacing: 0.05
-  boardUp: 0
+  boardUp: -1
 --- !u!4 &1528074830
 Transform:
   m_ObjectHideFlags: 0
@@ -1452,7 +1452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMode: 0
   board: {fileID: 1528074828}
-  defaultEdgeLength: 20
+  defaultEdgeLength: 10
   defaultWordCount: 3
 --- !u!4 &2145212734
 Transform:
