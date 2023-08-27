@@ -7,9 +7,15 @@ public class PlaySceneMenu : MonoBehaviour
 
     public void OnBackIconButtonPressed()
     {
-        Debug.Log("LoadPlayModesScene");
+        Debug.Log("OnBackIconButtonPressed");
         SceneLoader.LoadPlayModesScene();
     }
 
+
+    public void OnSettingsButtonPressed()
+    {
+        Debug.Log("OnSettingsButtonPressed");
+        PersistentDataManager.Instance.Increase();
+    }
 
 }
