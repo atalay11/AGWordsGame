@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class GameManager : GenericSingleton<GameManager>
 {
-    // Start is called before the first frame update
-    
     private void Start()
     {
         
     }
 
-    // Update is called once per frame
     private void Update() 
     {
-        // Temporary Language changer for each touch down
-        TempLanguageChanger();
+        TempLanguageChanger(); // Temporary Language changer for each touch down
     }
 
     private void TempLanguageChanger()

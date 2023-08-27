@@ -43,11 +43,11 @@ public class LetterSelectionChecker : GenericSingleton<LetterSelectionChecker>
 
     private void Start()
     {
-        GameInput.Instance.OnLetterLayerSelectAction += GameInput_OnLetterLayerSelectAction;
-        GameInput.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
+        GameInputWordSpy.Instance.OnLetterLayerSelectAction += GameInput_OnLetterLayerSelectAction;
+        GameInputWordSpy.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
     }
 
-    private void GameInput_OnLetterLayerSelectAction(object sender, GameInput.OnLetterLayerSelectEventArgs e)
+    private void GameInput_OnLetterLayerSelectAction(object sender, GameInputWordSpy.OnLetterLayerSelectEventArgs e)
     {
         if (originLetterCube == null)
         {
