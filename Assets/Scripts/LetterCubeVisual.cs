@@ -18,7 +18,7 @@ public class LetterCubeVisual : MonoBehaviour
         LetterSelectionChecker.Instance.OnLetterSelected += LetterSelectionChecker_OnLetterSelected;
         LetterSelectionChecker.Instance.OnLetterUnSelected += LetterSelectionChecker_OnLetterUnSelected;
 
-        GameInput.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
+        GameInputWordSpy.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
     }
 
     private void LetterSelectionChecker_OnLetterSelected(object sender, LetterSelectionChecker.OnLetterSelectedEventArgs e)

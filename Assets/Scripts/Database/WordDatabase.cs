@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 
-public class WordDatabase : MonoBehaviour
+public class WordDatabase : GenericSingleton<WordDatabase>
 {
     public enum WordType : int
     {
@@ -14,19 +15,8 @@ public class WordDatabase : MonoBehaviour
         WordTypeNB
     }
 
-    public static WordDatabase Instance { get; private set; }
-
-    private void Awake()
+    protected override void AwakeImpl()
     {
-        // If an instance already exists, destroy the newly created one.
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogError("WordDatabase is singleton but tried to be set more than once.");
-            return;
-        }
-
-        // Set the instance to this object if it's null.
-        Instance = this;
         Initialize();
         DontDestroyOnLoad(gameObject);
     }

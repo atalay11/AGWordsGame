@@ -3,12 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameInput : MonoBehaviour
+public class GameInputWordSpy : GenericSingleton<GameInputWordSpy>
 {
-    // Singleton
-
-    public static GameInput Instance { get; private set; }
-
     // Events
 
     public EventHandler OnSelectReleaseAction;
@@ -17,18 +13,6 @@ public class GameInput : MonoBehaviour
     public class OnLetterLayerSelectEventArgs : EventArgs
     {
         public LetterCube letterCube;
-    }
-
-    // Functions
-
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Debug.LogError("GameInput is singleton but tried to be set more than once.");
-        }
-
-        Instance = this;
     }
 
     private void Update()
@@ -52,12 +36,4 @@ public class GameInput : MonoBehaviour
             OnSelectReleaseAction?.Invoke(this, EventArgs.Empty);
         }
     }
-
-
-    // Singleton
-
-
-
-
-
 }
