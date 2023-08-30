@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class LetterCubeVisual : MonoBehaviour
 {
     private readonly string OnSelect = "OnSelected";
+    private readonly string IsSelect = "IsSelected";
 
     [SerializeField] private LetterCube letterCube;
+    [SerializeField] private Color selectColor;
 
     private Material material;
     private Color startColor;
@@ -34,10 +37,13 @@ public class LetterCubeVisual : MonoBehaviour
         if (letterCube == e.letterCube)
         {
             // what to do on select
-            if (material.color != Color.blue)
+            if (material.color != selectColor)
                 PlayOnSelectedAnimation();
 
-            material.color = Color.blue;
+            material.color = selectColor;
+
+
+            PlayIsSelectedAnimation(true);
         }
     }
 
@@ -46,7 +52,10 @@ public class LetterCubeVisual : MonoBehaviour
         if (letterCube == e.letterCube)
         {
             // what to do on select
+            Debug.Log("UnSelected!!");
             material.color = startColor;
+            PlayIsSelectedAnimation(false);
+            Debug.Log("UnSelected!!");
         }
     }
 
@@ -54,16 +63,16 @@ public class LetterCubeVisual : MonoBehaviour
     private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
     {
         material.color = startColor;
+        PlayIsSelectedAnimation(false);
     }
 
     private void PlayOnSelectedAnimation()
     {
-        // var isIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
-        // var isLetterCubeVisual = animator.GetCurrentAnimatorStateInfo(0).IsName("LetterCubeVisual");
-        // Debug.Log($"isIdle: {isIdle}");
-        // Debug.Log($"isLetterCubeVisual: {isLetterCubeVisual}");
-
-
         animator.SetTrigger(OnSelect);
+    }
+
+    private void PlayIsSelectedAnimation(bool play)
+    {
+        animator.SetBool(IsSelect, play);
     }
 }

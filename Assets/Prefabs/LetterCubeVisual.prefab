@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   letterCube: {fileID: 0}
+  selectColor: {r: 0, g: 0.5921569, b: 0.9019608, a: 1}
 --- !u!95 &596828481791350320
 Animator:
   serializedVersion: 5
