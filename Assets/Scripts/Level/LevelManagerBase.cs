@@ -27,7 +27,6 @@ public enum LevelEventType
 
 public interface ILevelManager
 {
-    public abstract void InitLevel(Level level);
     public void AddEventCallback(LevelEventType eventType, Action<object, EventArgs> action);
     public GameMode GetGameMode();
 }
@@ -36,7 +35,6 @@ public abstract class LevelManagerBase: MonoBehaviour, ILevelManager
 {
     [SerializeField] GameMode gameMode;
 
-    public void InitLevel(Level level) { InitLevelImpl(level); }
     public GameMode GetGameMode() { return gameMode; }
     public void AddEventCallback(LevelEventType eventType, Action<object, EventArgs> action)
     {
@@ -47,8 +45,6 @@ public abstract class LevelManagerBase: MonoBehaviour, ILevelManager
 
         m_EventMap[eventType] += new EventHandler<EventArgs>(action);
     }
-
-    protected abstract void InitLevelImpl(Level level);
 
     protected void RaiseEvent(LevelEventType eventType, EventArgs eventArgs)
     {

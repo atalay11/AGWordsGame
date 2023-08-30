@@ -22,11 +22,6 @@ public class LevelManagerWordSpy : LevelManagerBase
         NewBoard(defaultEdgeLength);
     }
 
-    protected override void InitLevelImpl(Level level)
-    {
-        NewBoard(defaultEdgeLength);
-    }
-
     public void NewBoard(int edgeLength)
     {
         board.GetComponent<BoardWordSpy>().ResetWithNewEdgeLength(edgeLength);
@@ -37,90 +32,59 @@ public class LevelManagerWordSpy : LevelManagerBase
         UpdateBoardWordsRandomly(defaultWordCount);
     }
 
-    private bool UpdateBoardWordsRandomly(int wordCount)
+    private void UpdateBoardWordsRandomly(int wordCount)
     {
-        List<string> words = new List<string>();
+        const int SEARCH_LIMIT = 100;
+        const int PLACE_SEARCH_LIMIT = 25;
+
+        Direction[] directions = BoardDirection.directionList;
+
+        var boardComponent = board.GetComponent<BoardWordSpy>();
+        boardComponent.CleanBoard();
+
+        List<string> selectedWords = new List<string>();
 
         foreach (int _ in Enumerable.Range(0, wordCount))
         {
-            string randomWord;
-            int cnt = 0;
-            do
+            int searchLimitCnt = 0;
+            do // Search `SEARCH_LIMIT` words and try `PLACE_SEARCH_LIMIT` attempt to place it
             {
-                cnt++;
-                randomWord = WordDatabase.Instance.GetRandomWord();
-            }
-            while (randomWord.Length > 10 && cnt < 100);
+                bool placed = false;
+                ShuffleArray(directions);
+                int placeLimitCnt = 0;
 
-            if (cnt == 100)
-            {
-                Debug.LogError($"Cannot select random words.");
-                return false;
-            }
+                string word; // If word is already selected, search for another word.
+                do { word = WordDatabase.Instance.GetRandomWord(); } while (selectedWords.Contains(word));
+                
+                while (!placed && placeLimitCnt++ < PLACE_SEARCH_LIMIT)
+                {
+                    foreach (Direction direction in directions)
+                    {
+                        if (boardComponent.SetWord(word, boardComponent.GenerateRandomLetterLocation(), direction))
+                        // TODO: For long words maybe increase the weight of the randomness of side locations
+                        {
+                            selectedWords.Add(word);
+                            placed = true;
+                            break;
+                        }
+                    }
+                }
+                if (placed)
+                    break;
+                else
+                    Debug.LogError($"Cannot place word `{word}`. Please retry.");
 
-            words.Add(randomWord);
+            } while (searchLimitCnt++ < SEARCH_LIMIT);
         }
 
-        UpdateSelectedWordListeners(words);
-
-        return UpdateBoardWords(words);
+        boardComponent.FillEmptyLetters();
+        m_selectedWords = selectedWords;
+        UpdateSelectedWordListeners(selectedWords);
     }
 
     private void UpdateSelectedWordListeners(List<string> words)
     {
         OnSelectedWords?.Invoke(this, new OnSelectedWordsEventArgs { selectedWords = words });
-    }
-
-
-    private bool UpdateBoardWords(List<string> words)
-    {
-        m_selectedWords = words;
-        return UpdateBoardWords();
-    }
-
-    private bool UpdateBoardWords()
-    {
-        Direction[] directions = {
-            Direction.Up,
-            Direction.Down,
-            Direction.Right,
-            Direction.Left,
-            Direction.UpperRight,
-            Direction.UpperLeft,
-            Direction.DownRight,
-            Direction.DownLeft
-        };
-
-        var boardComponent = board.GetComponent<BoardWordSpy>();
-        boardComponent.CleanBoard();
-
-        foreach (string word in m_selectedWords)
-        {
-            ShuffleArray(directions);
-            bool placed = false;
-            int cnt = 0;
-            while (!placed && cnt < 25)
-            {
-                cnt++;
-                foreach (Direction direction in directions)
-                {
-                    if (boardComponent.SetWord(word, boardComponent.GenerateRandomLetterLocation(), direction))
-                    {
-                        placed = true;
-                        break;
-                    }
-                }
-            }
-            if (!placed)
-            {
-                Debug.LogError($"Cannot place new words. Please retry.");
-                return false;
-            }
-        }
-
-        boardComponent.FillEmptyLetters();
-
-        return true;
     }
 
     private static void ShuffleArray<T>(T[] array)

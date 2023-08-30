@@ -17,6 +17,11 @@ public enum Direction
 
 public static class BoardDirection
 {
+    public static readonly Direction[] directionList = 
+    {
+        Direction.Up, Direction.Down, Direction.Right, Direction.Left, 
+        Direction.UpperRight, Direction.UpperLeft, Direction.DownRight, Direction.DownLeft
+    };
     public static readonly Dictionary<Direction, Vector2Int> directionMappings = new Dictionary<Direction, Vector2Int>
     {
         { Direction.Up, new Vector2Int(0, 1) },
