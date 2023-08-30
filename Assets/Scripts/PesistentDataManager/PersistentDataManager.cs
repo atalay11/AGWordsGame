@@ -31,12 +31,6 @@ public class PersistentDataManager : GenericSingleton<PersistentDataManager>
 class WordSpyDatabase
 {
     private readonly string m_path = Application.persistentDataPath + Path.DirectorySeparatorChar + "wordSpy.json";
-    // FileStream fileStream;
-
-    // WordSpyDatabase()
-    // {
-    //     fileStream = new FileStream(m_path, FileMode.Open);
-    // }
 
     public void SaveData(WordSpyGameData data)
     {

@@ -1147,7 +1147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   letterGenerator: {fileID: 2020205224}
-  board: {fileID: 0}
+  board: {fileID: 1528074830}
   spacing: 0.05
   boardUp: -1
 --- !u!4 &1528074830
