@@ -52,10 +52,8 @@ public class LetterCubeVisual : MonoBehaviour
         if (letterCube == e.letterCube)
         {
             // what to do on select
-            Debug.Log("UnSelected!!");
             material.color = startColor;
             PlayIsSelectedAnimation(false);
-            Debug.Log("UnSelected!!");
         }
     }
 
