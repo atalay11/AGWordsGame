@@ -1,14 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class LetterCubeVisual : MonoBehaviour
 {
+    private readonly string OnSelect = "OnSelected";
+    private readonly string IsSelect = "IsSelected";
+
     [SerializeField] private LetterCube letterCube;
+    [SerializeField] private Color selectColor;
 
     private Material material;
     private Color startColor;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -26,7 +37,13 @@ public class LetterCubeVisual : MonoBehaviour
         if (letterCube == e.letterCube)
         {
             // what to do on select
-            material.color = Color.blue;
+            if (material.color != selectColor)
+                PlayOnSelectedAnimation();
+
+            material.color = selectColor;
+
+
+            PlayIsSelectedAnimation(true);
         }
     }
 
@@ -36,6 +53,7 @@ public class LetterCubeVisual : MonoBehaviour
         {
             // what to do on select
             material.color = startColor;
+            PlayIsSelectedAnimation(false);
         }
     }
 
@@ -43,5 +61,16 @@ public class LetterCubeVisual : MonoBehaviour
     private void GameInput_OnSelectReleaseAction(object sender, EventArgs e)
     {
         material.color = startColor;
+        PlayIsSelectedAnimation(false);
+    }
+
+    private void PlayOnSelectedAnimation()
+    {
+        animator.SetTrigger(OnSelect);
+    }
+
+    private void PlayIsSelectedAnimation(bool play)
+    {
+        animator.SetBool(IsSelect, play);
     }
 }
