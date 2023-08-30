@@ -6,16 +6,16 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     const string mainMenuScene = "MainMenuScene";
-    const string playScene = "PlayScene";
+    const string wordSpyScene = "WordSpyScene";
     const string playModesScene = "PlayModesScene";
 
     static public void LoadMainMenuScene()
     {
         SceneManager.LoadScene(mainMenuScene, LoadSceneMode.Single);
     }
-    static public void LoadPlayScene()
+    static public void LoadWordSpyScene()
     {
-        SceneManager.LoadScene(playScene, LoadSceneMode.Single);
+        SceneManager.LoadScene(wordSpyScene, LoadSceneMode.Single);
     }
     static public void LoadPlayModesScene()
     {
