@@ -9,7 +9,7 @@ public class WordSpyHudManager : MonoBehaviour
 {
     [SerializeField] private Transform searchedWordPrefab;
     [SerializeField] private Transform hud;
-    [SerializeField] private LevelManagerWordSpy levelManager; // this is not singleton
+    [SerializeField] private LevelManagerWordSpyBase levelManager; // this is not singleton
 
     private Dictionary<string, Transform> searchedWordDict;
 
@@ -21,7 +21,7 @@ public class WordSpyHudManager : MonoBehaviour
         LetterSelectionChecker.Instance.OnWordSelected += OnWordSelected;
     }
 
-    private void OnSelectedWords(object sender, LevelManagerWordSpy.OnSelectedWordsEventArgs e)
+    private void OnSelectedWords(object sender, LevelManagerWordSpyBase.OnSelectedWordsEventArgs e)
     {
         foreach (var (_, item) in searchedWordDict)
         {

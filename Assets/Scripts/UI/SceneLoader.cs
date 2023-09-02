@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     const string mainMenuScene = "MainMenuScene";
-    const string wordSpyScene = "WordSpyScene";
     const string playModesScene = "PlayModesScene";
     const string levelSelectionScene = "LevelSelectionScene";
+
+    const string timedWordSpyScene = "TimedWordSpyScene";
+    const string grandPaWordSpyScene = "GrandPaWordSpyScene";
+
+
 
     static public void LoadMainMenuScene()
     {
@@ -17,18 +21,19 @@ public class SceneLoader : MonoBehaviour
 
     static public void LoadGameScene(GameMode gameMode)
     {
-        if ( gameMode == GameMode.WordSpyGrandpa )
+        if (gameMode == GameMode.WordSpyGrandpa)
         {
-            SceneManager.LoadScene(wordSpyScene, LoadSceneMode.Single);
+            SceneManager.LoadScene(grandPaWordSpyScene, LoadSceneMode.Single);
+        }
+        else if (gameMode == GameMode.WordSpyArcade)
+        {
+            SceneManager.LoadScene(timedWordSpyScene, LoadSceneMode.Single);
         }
         else // TODO: Replace this
         {
-            SceneManager.LoadScene(wordSpyScene, LoadSceneMode.Single);
+            SceneManager.LoadScene(grandPaWordSpyScene, LoadSceneMode.Single);
         }
-        // else if ( gameMode == GameMode.WordSpyArcade )
-        // {
-        //     // TODO:
-        // }
+
         // else if ( gameMode == GameMode.WordSpyBlindfold )
         // {
         //     // TODO:
@@ -43,7 +48,7 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene(playModesScene, LoadSceneMode.Single);
     }
-    
+
     static public void LoadLevelSelectionScene()
     {
         SceneManager.LoadScene(levelSelectionScene, LoadSceneMode.Single);

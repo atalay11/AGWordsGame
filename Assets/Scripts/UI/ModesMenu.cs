@@ -9,6 +9,11 @@ public class ModesMenu : GenericSingleton<ModesMenu>
         SceneLoader.LoadLevelSelectionScene();
     }
 
+    public void OnArcadeWordSpyButtonPressed()
+    {
+        SceneLoader.LoadGameScene(GameMode.WordSpyArcade);
+    }
+
     public void OnBackIconButtonPressed()
     {
         Debug.Log("Load Main Menu Scene");
