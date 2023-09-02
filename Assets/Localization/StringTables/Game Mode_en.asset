@@ -19,15 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 14284304384
-    m_Localized: Game Mode 1
+    m_Localized: Word Spy (Grandpa Mode)
     m_Metadata:
       m_Items: []
   - m_Id: 78855614464
-    m_Localized: Game Mode 2
+    m_Localized: Word Spy (Arcade Mode)
     m_Metadata:
       m_Items: []
   - m_Id: 97067282432
-    m_Localized: Game Mode 3
+    m_Localized: Word Spy (Blindfold Mode)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4594777486602240
+    m_Localized: Crossword (Grandpa Mode)
     m_Metadata:
       m_Items: []
   references:

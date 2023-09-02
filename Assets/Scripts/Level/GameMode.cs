@@ -4,6 +4,8 @@ using UnityEngine;
 
 public enum GameMode
 {
-    WordSpy,
-    CrossWord
+    WordSpyGrandpa,
+    WordSpyArcade,
+    WordSpyBlindfold,
+    CrossWordGrandpa
 }

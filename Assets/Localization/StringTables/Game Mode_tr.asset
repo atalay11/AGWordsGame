@@ -19,15 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 14284304384
-    m_Localized: Oyun Modu 1
+    m_Localized: Kelime Arama (Dede Modu)
     m_Metadata:
       m_Items: []
   - m_Id: 78855614464
-    m_Localized: Oyun Modu 2
+    m_Localized: "Kelime Arama (Delikanl\u0131 Modu)"
     m_Metadata:
       m_Items: []
   - m_Id: 97067282432
-    m_Localized: Oyun Modu 3
+    m_Localized: Kelime Arama (Ce..eee Modu)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4594777486602240
+    m_Localized: Kare Bulmaca (Dede Modu)
     m_Metadata:
       m_Items: []
   references:
