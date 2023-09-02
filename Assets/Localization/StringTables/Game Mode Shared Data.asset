@@ -15,16 +15,20 @@ MonoBehaviour:
   m_TableCollectionName: Game Mode
   m_TableCollectionNameGuidString: a859502cc802afd4399736e6fbbdb1ea
   m_Entries:
-  - m_Id: 14284304384
-    m_Key: Mode1
-    m_Metadata:
-      m_Items: []
   - m_Id: 78855614464
-    m_Key: Mode2
+    m_Key: WordSpyArcade
     m_Metadata:
       m_Items: []
   - m_Id: 97067282432
-    m_Key: Mode3
+    m_Key: WordSpyBlindfold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14284304384
+    m_Key: WordSpyGrandPa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4594777486602240
+    m_Key: CrosswordGrandPa
     m_Metadata:
       m_Items: []
   m_Metadata:

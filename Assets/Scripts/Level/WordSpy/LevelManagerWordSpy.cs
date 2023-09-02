@@ -24,6 +24,7 @@ public class LevelManagerWordSpy : LevelManagerBase
     
     private void Awake()
     {
+        m_CurrentLevel = LevelSelectionSceneData.Instance.LevelInfo;
         SetLevel(m_CurrentLevel);
     }
 

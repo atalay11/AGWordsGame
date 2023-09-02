@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModesMenu : MonoBehaviour
+public class ModesMenu : GenericSingleton<ModesMenu>
 {
     public void OnPlayButtonPressed()
     {
-        SceneLoader.LoadWordSpyScene();
+        SceneLoader.LoadLevelSelectionScene();
     }
 
     public void OnBackIconButtonPressed()

@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayModesScene.unity
     guid: 4a642f7cd5d83ff4eab23b3358911dc0
   - enabled: 1
+    path: Assets/Scenes/LevelSelectionScene.unity
+    guid: 1332a7a41bae0dd4d93ac80931984cc4
+  - enabled: 1
     path: Assets/Scenes/WordSpyScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
