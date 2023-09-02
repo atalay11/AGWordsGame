@@ -17,11 +17,11 @@ public class BoardWordSpy : MonoBehaviour
     private Dictionary<LetterLocation, Transform> m_LetterMap;
     private float m_ElementScaling;
     private float m_ElementSpacing;
-    private int m_edgeLength; // board size will be -> edgeLength - edgeLength (width - height)
+    private int m_EdgeLength; // board size will be -> edgeLength - edgeLength (width - height)
 
     public void ResetWithNewEdgeLength(int newEdgeLength)
     {
-        m_edgeLength = newEdgeLength;
+        m_EdgeLength = newEdgeLength;
         ResetLetters();
     }
 
@@ -111,14 +111,14 @@ public class BoardWordSpy : MonoBehaviour
 
     public LetterLocation GenerateRandomLetterLocation()
     {
-        return new LetterLocation(UnityEngine.Random.Range(0, m_edgeLength), UnityEngine.Random.Range(0, m_edgeLength));
+        return new LetterLocation(UnityEngine.Random.Range(0, m_EdgeLength), UnityEngine.Random.Range(0, m_EdgeLength));
     }
 
     public void CleanBoard()
     {
-        foreach (int col in Enumerable.Range(0, m_edgeLength))
+        foreach (int col in Enumerable.Range(0, m_EdgeLength))
         {
-            foreach (int row in Enumerable.Range(0, m_edgeLength))
+            foreach (int row in Enumerable.Range(0, m_EdgeLength))
             {
                 SetLetter('?', new LetterLocation(col, row));
             }
@@ -127,9 +127,9 @@ public class BoardWordSpy : MonoBehaviour
 
     public void FillEmptyLetters()
     {
-        foreach (int col in Enumerable.Range(0, m_edgeLength))
+        foreach (int col in Enumerable.Range(0, m_EdgeLength))
         {
-            foreach (int row in Enumerable.Range(0, m_edgeLength))
+            foreach (int row in Enumerable.Range(0, m_EdgeLength))
             {
                 var locationCursor = new LetterLocation(col, row);
                 if (GetLetter(locationCursor) == '?')
@@ -183,8 +183,8 @@ public class BoardWordSpy : MonoBehaviour
         float elementHeight = 1;
         float elementWidth = 1;
 
-        float rawWholeSize = m_edgeLength * elementHeight + (m_edgeLength - 1) * spacing;
-        float columnWholeSize = m_edgeLength * elementWidth + (m_edgeLength - 1) * spacing;
+        float rawWholeSize = m_EdgeLength * elementHeight + (m_EdgeLength - 1) * spacing;
+        float columnWholeSize = m_EdgeLength * elementWidth + (m_EdgeLength - 1) * spacing;
 
         float scaleOfElementsIfRow = frustumHeight / rawWholeSize;
         float scaleOfElementsIfColumn = frustumWidth / columnWholeSize;
@@ -198,16 +198,16 @@ public class BoardWordSpy : MonoBehaviour
 
     private void InitLetterMap()
     {
-        m_LetterMap = new Dictionary<LetterLocation, Transform>(m_edgeLength * m_edgeLength);
+        m_LetterMap = new Dictionary<LetterLocation, Transform>(m_EdgeLength * m_EdgeLength);
         InitializeBoard();
         AdjustRandomLetterPositions();
     }
 
     private void InitializeBoard()
     {
-        foreach (int col in Enumerable.Range(0, m_edgeLength))
+        foreach (int col in Enumerable.Range(0, m_EdgeLength))
         {
-            foreach (int row in Enumerable.Range(0, m_edgeLength))
+            foreach (int row in Enumerable.Range(0, m_EdgeLength))
             {
                 var randomLetter = LetterUtils.Instance.GenerateRandomLetter();
                 var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
@@ -231,8 +231,8 @@ public class BoardWordSpy : MonoBehaviour
     private void SetLetterModelPosition(Transform letterCube, LetterLocation location)
     {
         Vector3 origin = new Vector3(
-            (float)m_ElementSpacing * (m_edgeLength - 1) / 2,
-            (float)m_ElementSpacing * (m_edgeLength - 1) / 2,
+            (float)m_ElementSpacing * (m_EdgeLength - 1) / 2,
+            (float)m_ElementSpacing * (m_EdgeLength - 1) / 2,
             0f);
 
         origin.y += boardUp;

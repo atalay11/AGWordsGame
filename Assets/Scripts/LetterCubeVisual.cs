@@ -66,11 +66,17 @@ public class LetterCubeVisual : MonoBehaviour
 
     private void PlayOnSelectedAnimation()
     {
-        animator.SetTrigger(OnSelect);
+        if (animator != null)
+        {
+            animator.SetTrigger(OnSelect);
+        }
     }
 
     private void PlayIsSelectedAnimation(bool play)
     {
-        animator.SetBool(IsSelect, play);
+        if (animator != null)
+        {
+            animator.SetBool(IsSelect, play);
+        }
     }
 }

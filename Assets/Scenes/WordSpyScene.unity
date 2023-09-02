@@ -1452,8 +1452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMode: 0
   board: {fileID: 1528074828}
-  defaultEdgeLength: 10
-  defaultWordCount: 9
+  currentEdgeLength: 5
 --- !u!4 &2145212734
 Transform:
   m_ObjectHideFlags: 0

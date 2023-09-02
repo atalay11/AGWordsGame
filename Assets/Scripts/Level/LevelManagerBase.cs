@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Level 
+public class Level : IComparable<Level>
 {
-    public Level() {}
-    public Level(int level) {}
+    public Level() { }
+    public Level(int level) { Value = level; }
 
     public static Level GetNextLevel(Level level) { return new Level(level.Value + 1); }
-    
+
     public int Value
     {
         get { return m_Level; }
@@ -18,6 +18,32 @@ public class Level
     }
 
     private int m_Level = 1;
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        Level other = (Level)obj;
+        return Value == other.Value;
+    }
+
+    public override int GetHashCode()
+    {
+        return Value.GetHashCode();
+    }
+
+    public int CompareTo(Level other)
+    {
+        if (other == null)
+        {
+            return 1;
+        }
+
+        return Value.CompareTo(other.Value);
+    }
 }
 
 public enum LevelEventType
