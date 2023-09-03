@@ -7,6 +7,7 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
     private void Awake()
     {
         NewBoard(RandomLevelInfo());
+        SetScore();
     }
 
     private void Update()
@@ -25,6 +26,8 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
 
     override protected void OnCorrectWordSelectedImpl(string word)
     {
+        UpdateScore(word);
+
         if (GetRemainingWords().Count == 0)
         {
             // todo create the new board
@@ -32,6 +35,18 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
             var lvlInfo = GetLevelInfo();
             totalTime += lvlInfo.edgeLength * lvlInfo.wordCount / 2;
         }
+    }
+
+    void UpdateScore(string word)
+    {
+        var lvlInfo = GetLevelInfo();
+        score += word.Length * lvlInfo.edgeLength;
+        SetScore();
+    }
+
+    void SetScore()
+    {
+        scoreVisual.SetScore(score);
     }
 
     private LevelInfo RandomLevelInfo()
@@ -44,8 +59,10 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
     // -- 
 
     [SerializeField] private TimerVisual timerVisual;
+    [SerializeField] private ScoreVisual scoreVisual;
     private float passedTime = 0f;
     private float totalTime = 10f;
+    private long score = 0;
 
     private System.Random rng = new System.Random();
 

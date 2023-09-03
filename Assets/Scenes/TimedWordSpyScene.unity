@@ -384,9 +384,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1085036173605762431, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2308155883182064805, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 1
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2491192025830560515, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_IsActive
@@ -501,8 +505,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3474907564031798930, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+      propertyPath: m_text
+      value: Score
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474907564031798930, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4628109700150587835, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_Enabled
@@ -540,6 +548,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScreenCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7377779593137669456, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7704285216437339126, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_ChildControlWidth
       value: 1
@@ -554,7 +566,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3240650684023012307, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 648430988}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7387449846627160729, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 534108620}
   m_SourcePrefab: {fileID: 100100000, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
 --- !u!224 &504314230 stripped
 RectTransform:
@@ -621,6 +636,35 @@ MonoBehaviour:
   m_Spacing: {x: 20, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &534108616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7387449846627160729, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+  m_PrefabInstance: {fileID: 504314229}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &534108618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3474907564031798930, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
+  m_PrefabInstance: {fileID: 504314229}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534108616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &534108620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534108616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49b0ecc66dc3ab45b8edf9190459be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_text: {fileID: 534108618}
 --- !u!1 &638059311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,6 +1730,7 @@ MonoBehaviour:
   board: {fileID: 1528074828}
   currentEdgeLength: -1
   timerVisual: {fileID: 648430987}
+  scoreVisual: {fileID: 534108620}
 --- !u!1 &2146049827
 GameObject:
   m_ObjectHideFlags: 0
