@@ -534,7 +534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnBackIconButtonPressed
+      value: GoToModeSelection
       objectReference: {fileID: 0}
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
