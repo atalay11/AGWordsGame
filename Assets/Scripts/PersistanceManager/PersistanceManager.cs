@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ArcadeWordSpyGameData
 {
-    public int highestScore;
+    public long highestScore;
 }
 
 public class PersistanceManager : GenericSingleton<PersistanceManager>
