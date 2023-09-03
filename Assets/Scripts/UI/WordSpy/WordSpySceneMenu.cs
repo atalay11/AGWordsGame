@@ -15,7 +15,6 @@ public class PlaySceneMenu : MonoBehaviour
     public void OnSettingsButtonPressed()
     {
         Debug.Log("OnSettingsButtonPressed");
-        PersistentDataManager.Instance.Increase();
     }
 
 }

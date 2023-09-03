@@ -3,68 +3,90 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class WordSpyGameData
+public class ArcadeWordSpyGameData
 {
     public int highestScore;
 }
 
 public class PersistentDataManager : GenericSingleton<PersistentDataManager>
 {
-    WordSpyDatabase m_wordSpyDatabase;
+    ArcadeWordSpyDatabase m_arcadeWordSpyDatabase;
 
     protected override void AwakeImpl()
     {
-        m_wordSpyDatabase = new WordSpyDatabase();
+        m_arcadeWordSpyDatabase = new ArcadeWordSpyDatabase();
     }
 
-    public void Increase()
+    public ArcadeWordSpyGameData GetArcadeWordSpyGameData()
     {
-        var gameData = m_wordSpyDatabase.LoadGameData();
-        Debug.Log($"Higest Score: {gameData.highestScore}");
-        gameData.highestScore += 1;
-        m_wordSpyDatabase.SaveData(gameData);
+        return m_arcadeWordSpyDatabase.LoadGameData();
+    }
+
+    public void SetArcadeWordSpyGameData(ArcadeWordSpyGameData gameData)
+    {
+        m_arcadeWordSpyDatabase.SaveData(gameData);
     }
 }
 
-
-
-class WordSpyDatabase
+class GameDatabaseUtils
 {
-    private readonly string m_path = Application.persistentDataPath + Path.DirectorySeparatorChar + "wordSpy.json";
-
-    public void SaveData(WordSpyGameData data)
+    static public void SaveData<T>(string path, T data)
     {
-        CreateDefaultFileIfNotExists();
-
         string gameDataString = JsonUtility.ToJson(data);
-        File.WriteAllText(m_path, gameDataString);
+        File.WriteAllText(path, gameDataString);
     }
 
-    public WordSpyGameData LoadGameData()
+    static public T LoadData<T>(string path)
+    {
+        string gameDataString = File.ReadAllText(path);
+        return JsonUtility.FromJson<T>(gameDataString);
+    }
+
+    // returns true if file is created, false otherwise
+    static public bool CreateFile(string path)
+    {
+        if (!File.Exists(path))
+        {
+            File.CreateText(path).Dispose();
+            return true;
+        }
+
+        return false;
+    }
+}
+
+class ArcadeWordSpyDatabase
+{
+    public void SaveData(ArcadeWordSpyGameData data)
     {
         CreateDefaultFileIfNotExists();
 
-        string gameDataString = File.ReadAllText(m_path);
-        return JsonUtility.FromJson<WordSpyGameData>(gameDataString);
+        GameDatabaseUtils.SaveData(m_path, data);
+    }
+
+    public ArcadeWordSpyGameData LoadGameData()
+    {
+        CreateDefaultFileIfNotExists();
+
+        return GameDatabaseUtils.LoadData<ArcadeWordSpyGameData>(m_path);
     }
 
     private void CreateDefaultFileIfNotExists()
     {
-        if (!File.Exists(m_path))
+        if (GameDatabaseUtils.CreateFile(m_path))
         {
-            File.CreateText(m_path).Dispose();
-            var gameDataString = JsonUtility.ToJson(InitialWordSpyGameData());
-            Debug.Log($"writing to the file, gameDataString: {gameDataString}");
-            File.WriteAllText(m_path, gameDataString);
+            Debug.Log($"Creating WordSpyDatabase file.");
+            GameDatabaseUtils.SaveData(m_path, InitialWordSpyGameData());
         }
     }
 
-    private WordSpyGameData InitialWordSpyGameData()
+    private ArcadeWordSpyGameData InitialWordSpyGameData()
     {
-        WordSpyGameData wordSpyGameData = new WordSpyGameData();
-        wordSpyGameData.highestScore = 1;
-
-        return wordSpyGameData;
+        return new ArcadeWordSpyGameData { highestScore = 0 };
     }
+
+    // -- 
+    private readonly string m_path = Application.persistentDataPath + Path.DirectorySeparatorChar + "arcadeWordSpy.json";
+
 }
 
