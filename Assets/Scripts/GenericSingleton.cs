@@ -4,7 +4,7 @@ using UnityEngine;
 public class GenericSingleton<T> : MonoBehaviour where T : Component
 {
     [SerializeField] private bool persistAcrossScenes;
-    
+
     // create a private reference to T instance
     private static T instance;
 
@@ -41,14 +41,13 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
             {
                 DontDestroyOnLoad(this.gameObject);
             }
+            AwakeImpl();
         }
         else
         {
             Destroy(gameObject);
         }
-
-        AwakeImpl();
     }
 
-    protected virtual void AwakeImpl() {}
+    protected virtual void AwakeImpl() { }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -447,6 +447,18 @@ PrefabInstance:
     - target: {fileID: 1305720574755788852, guid: dd437be807536cc4988e59f771b1d1da, type: 3}
       propertyPath: gameMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706655726041107495, guid: dd437be807536cc4988e59f771b1d1da, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1094615357}
+    - target: {fileID: 5706655726041107495, guid: dd437be807536cc4988e59f771b1d1da, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnArcadeWordSpyButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706655726041107495, guid: dd437be807536cc4988e59f771b1d1da, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ModesMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8257166500907474548, guid: dd437be807536cc4988e59f771b1d1da, type: 3}
       propertyPath: m_Pivot.x
