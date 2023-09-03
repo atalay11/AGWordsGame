@@ -14,11 +14,19 @@ public class LevelManagerWordSpyBase : LevelManagerBase
     }
 
     // -- Functions -- 
+    private void Awake()
+    {
+        AwakeImpl();
+    }
 
     private void Start()
     {
         LetterSelectionChecker.Instance.OnWordSelected += LetterSelectionChecker_OnWordSelected;
+        StartImpl();
     }
+
+    protected virtual void StartImpl() { }
+    protected virtual void AwakeImpl() { }
 
     public void NewBoard(LevelInfo levelInfo)
     {

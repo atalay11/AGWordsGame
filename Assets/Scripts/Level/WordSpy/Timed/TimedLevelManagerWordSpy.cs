@@ -4,67 +4,105 @@ using UnityEngine;
 
 public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
 {
-    private void Awake()
+    protected override void AwakeImpl()
     {
         NewBoard(RandomLevelInfo());
         SetScore();
     }
 
+    protected override void StartImpl()
+    {
+        m_curGameData = PersistanceManager.Instance.GetArcadeWordSpyGameData();
+        Debug.Log($"Highest Score: {m_curGameData.highestScore}.");
+    }
+
     private void Update()
     {
 
-        if (passedTime >= totalTime)
+        if (m_passedTime >= m_totalTime)
         {
-            passedTime = totalTime;
+            if (m_gameOver == false)
+            {
+                m_passedTime = m_totalTime;
+                SaveGameData();
+                Debug.Log("GameOver!");
+                // todo open game over visual
+                // save highscore
+            }
+
+
+            m_gameOver = true;
         }
         else
         {
-            passedTime += Time.deltaTime;
-            timerVisual.SetFillAmount((totalTime - passedTime) / totalTime);
+            m_passedTime += Time.deltaTime;
+            m_timerVisual.SetFillAmount((m_totalTime - m_passedTime) / m_totalTime);
         }
     }
 
     override protected void OnCorrectWordSelectedImpl(string word)
     {
+        if (m_gameOver)
+            return;
+
         UpdateScore(word);
 
         if (GetRemainingWords().Count == 0)
         {
-            // todo create the new board
             NewBoard(RandomLevelInfo());
             var lvlInfo = GetLevelInfo();
-            totalTime += lvlInfo.edgeLength * lvlInfo.wordCount / 2;
+            m_totalTime += lvlInfo.edgeLength * lvlInfo.wordCount / 2;
         }
     }
 
     void UpdateScore(string word)
     {
         var lvlInfo = GetLevelInfo();
-        score += word.Length * lvlInfo.edgeLength;
+        m_score += word.Length * lvlInfo.edgeLength;
         SetScore();
     }
 
     void SetScore()
     {
-        scoreVisual.SetScore(score);
+        m_scoreVisual.SetScore(m_score);
     }
 
     private LevelInfo RandomLevelInfo()
     {
-        int newEdgeLength = rng.Next(5, 8);
-        int newWordCount = rng.Next(1, 4);
+        int newEdgeLength = m_rng.Next(5, 8);
+        int newWordCount = m_rng.Next(1, 4);
         return new LevelInfo { edgeLength = newEdgeLength, wordCount = newWordCount };
+    }
+
+    private void SaveGameData()
+    {
+        bool change = false;
+        if (m_score > m_curGameData.highestScore)
+        {
+            m_curGameData.highestScore = m_score;
+            Debug.Log($"New Highest Score: {m_curGameData.highestScore}.");
+            change = true;
+        }
+
+
+
+        if (change)
+        {
+            PersistanceManager.Instance.SetArcadeWordSpyGameData(m_curGameData);
+        }
     }
 
     // -- 
 
-    [SerializeField] private TimerVisual timerVisual;
-    [SerializeField] private ScoreVisual scoreVisual;
-    private float passedTime = 0f;
-    private float totalTime = 10f;
-    private long score = 0;
+    [SerializeField] private TimerVisual m_timerVisual;
+    [SerializeField] private ScoreVisual m_scoreVisual;
+    private float m_passedTime = 0f;
+    private float m_totalTime = 10f;
+    private long m_score = 0;
+    private bool m_gameOver = false;
+    ArcadeWordSpyGameData m_curGameData = new ArcadeWordSpyGameData();
 
-    private System.Random rng = new System.Random();
+    private System.Random m_rng = new System.Random();
 
 }
 

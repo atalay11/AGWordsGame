@@ -527,14 +527,14 @@ PrefabInstance:
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1490133897}
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnBackIconButtonPressed
+      value: GoToModeSelection
       objectReference: {fileID: 0}
     - target: {fileID: 5074284590850374737, guid: ab8e1c6e63ba1c340a458c870eaf37b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1726,11 +1726,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e46f597be487846818235330f4c0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameMode: 0
+  gameMode: 1
   board: {fileID: 1528074828}
   currentEdgeLength: -1
-  timerVisual: {fileID: 648430987}
-  scoreVisual: {fileID: 534108620}
+  m_timerVisual: {fileID: 648430987}
+  m_scoreVisual: {fileID: 534108620}
 --- !u!1 &2146049827
 GameObject:
   m_ObjectHideFlags: 0

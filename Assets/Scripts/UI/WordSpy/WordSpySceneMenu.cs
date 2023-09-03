@@ -11,5 +11,11 @@ public class PlaySceneMenu : MonoBehaviour
         SceneLoader.LoadLevelSelectionScene();
     }
 
+    // Bunlar hep ömer yüzünden
+    public void GoToModeSelection()
+    {
+        SceneLoader.LoadPlayModesScene();
+    }
+
 
 }
