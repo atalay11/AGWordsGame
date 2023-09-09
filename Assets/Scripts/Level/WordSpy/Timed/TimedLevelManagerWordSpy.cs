@@ -6,12 +6,12 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
 {
     protected override void AwakeImpl()
     {
-        NewBoard(RandomLevelInfo());
         SetScore();
     }
 
     protected override void StartImpl()
     {
+        NewBoard(RandomLevelInfo());
         m_curGameData = PersistanceManager.Instance.GetArcadeWordSpyGameData();
         Debug.Log($"Highest Score: {m_curGameData.highestScore}.");
     }

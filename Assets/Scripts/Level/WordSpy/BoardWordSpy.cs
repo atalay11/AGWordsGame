@@ -1,27 +1,46 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 
 public class BoardWordSpy : MonoBehaviour
 {
-    [SerializeField] private LetterGenerator letterGenerator;
-    [SerializeField] private Transform board;
-    [SerializeField] private float spacing = 0.05f;
-    [SerializeField] private float boardUp = 0.0f;
+    private void Awake()
+    {
+        m_rectTransform = GetComponent<RectTransform>();
+        m_gridLayoutGroup = GetComponent<GridLayoutGroup>();
+    }
 
-    // 0, 0 is bottom-left
-    private Dictionary<LetterLocation, Transform> m_LetterMap;
-    private float m_ElementScaling;
-    private float m_ElementSpacing;
-    private int m_EdgeLength; // board size will be -> edgeLength - edgeLength (width - height)
+    private void Start()
+    {
+        (lastWindowHeight, lastWindowWidth) = GetFrustumHeightAndWidth();
+    }
+
+    private void Update()
+    {
+        // need update
+        if (lastWindowHeight == 0)
+        {
+            (float curWindowHeight, float curWindowWidth) = GetFrustumHeightAndWidth();
+
+            if (curWindowHeight != 0)
+            {
+                lastWindowHeight = curWindowHeight;
+                lastWindowWidth = curWindowWidth;
+
+                SetElementScalingAndSpacing();
+                AdjustRandomLetterPositions();
+            }
+        }
+
+    }
 
     public void ResetWithNewEdgeLength(int newEdgeLength)
     {
         m_EdgeLength = newEdgeLength;
+        m_gridLayoutGroup.constraintCount = newEdgeLength;
         ResetLetters();
     }
 
@@ -170,30 +189,35 @@ public class BoardWordSpy : MonoBehaviour
 
     private (float, float) GetFrustumHeightAndWidth()
     {
-        float frustumHeight = 2.0f * Camera.main.orthographicSize;
-        float frustumWidth = frustumHeight * Camera.main.aspect;
-
-        return (frustumHeight, frustumWidth);
+        return (m_rectTransform.rect.height, m_rectTransform.rect.width);
     }
 
     private void SetElementScalingAndSpacing()
     {
+        if (lastWindowHeight == 0)
+            return;
+
         (float frustumHeight, float frustumWidth) = GetFrustumHeightAndWidth();
+        var boardPadding = m_gridLayoutGroup.padding;
+        var spacing = m_gridLayoutGroup.spacing.x;
+        var spacingSpace = (m_EdgeLength - 1) * spacing;
+        frustumHeight -= (boardPadding.top + boardPadding.bottom + spacingSpace);
+        frustumWidth -= (boardPadding.left + boardPadding.right + spacingSpace);
+        Debug.Log($"h: {frustumHeight}, w: {frustumWidth}");
 
         float elementHeight = 1;
         float elementWidth = 1;
 
-        float rawWholeSize = m_EdgeLength * elementHeight + (m_EdgeLength - 1) * spacing;
-        float columnWholeSize = m_EdgeLength * elementWidth + (m_EdgeLength - 1) * spacing;
+        float elementsWholeHeightSize = m_EdgeLength * elementHeight;
+        float elementsWholeWidthSize = m_EdgeLength * elementWidth;
 
-        float scaleOfElementsIfRow = frustumHeight / rawWholeSize;
-        float scaleOfElementsIfColumn = frustumWidth / columnWholeSize;
+        float scaleOfElementsIfHeight = frustumHeight / elementsWholeHeightSize;
+        float scaleOfElementsIfWidth = frustumWidth / elementsWholeWidthSize;
 
         // scale less to void floating point errors
         const float scaleErrorMargin = 0.05f;
 
-        m_ElementScaling = Math.Min(scaleOfElementsIfColumn, scaleOfElementsIfRow) - scaleErrorMargin;
-        m_ElementSpacing = m_ElementScaling + spacing;
+        m_ElementScaling = Math.Min(scaleOfElementsIfHeight, scaleOfElementsIfWidth) - scaleErrorMargin;
     }
 
     private void InitLetterMap()
@@ -210,7 +234,7 @@ public class BoardWordSpy : MonoBehaviour
             foreach (int row in Enumerable.Range(0, m_EdgeLength))
             {
                 var randomLetter = LetterUtils.Instance.GenerateRandomLetter();
-                var letterCube = letterGenerator.Generate(randomLetter, Vector3.zero, Quaternion.identity, board);
+                var letterCube = letterGenerator.Generate(randomLetter, board);
                 LetterLocation location = new LetterLocation(col, row);
                 m_LetterMap.Add(location, letterCube);
             }
@@ -219,6 +243,9 @@ public class BoardWordSpy : MonoBehaviour
 
     private void AdjustRandomLetterPositions()
     {
+        if (lastWindowHeight == 0)
+            return;
+
         foreach (KeyValuePair<LetterLocation, Transform> locationLetterCubeKeyVal in m_LetterMap)
         {
             var location = locationLetterCubeKeyVal.Key;
@@ -230,17 +257,20 @@ public class BoardWordSpy : MonoBehaviour
 
     private void SetLetterModelPosition(Transform letterCube, LetterLocation location)
     {
-        Vector3 origin = new Vector3(
-            (float)m_ElementSpacing * (m_EdgeLength - 1) / 2,
-            (float)m_ElementSpacing * (m_EdgeLength - 1) / 2,
-            0f);
-
-        origin.y += boardUp;
-
-        float xPos = (float)m_ElementSpacing * location.column - origin.x;
-        float yPos = (float)m_ElementSpacing * location.row - origin.y;
-
-        letterCube.position = new Vector3(xPos, yPos, 0f);
+        m_gridLayoutGroup.cellSize = new Vector2(m_ElementScaling, m_ElementScaling);
         letterCube.localScale *= (float)m_ElementScaling;
     }
+
+    // Variables
+
+    [SerializeField] private LetterGenerator letterGenerator;
+    [SerializeField] private Transform board;
+
+    private RectTransform m_rectTransform;
+    private GridLayoutGroup m_gridLayoutGroup;
+    private Dictionary<LetterLocation, Transform> m_LetterMap;    // 0, 0 is bottom-left
+    private float m_ElementScaling;
+    private int m_EdgeLength; // board size will be -> edgeLength - edgeLength (width - height)
+    private float lastWindowHeight = 0.0f;
+    private float lastWindowWidth = 0.0f;
 }

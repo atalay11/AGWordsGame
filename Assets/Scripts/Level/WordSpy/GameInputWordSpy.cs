@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameInputWordSpy : GenericSingleton<GameInputWordSpy>
 {
+    [SerializeField] Camera inputCamera;
     // Events
 
     public EventHandler OnSelectReleaseAction;
@@ -19,7 +20,7 @@ public class GameInputWordSpy : GenericSingleton<GameInputWordSpy>
     {
         if (Input.GetMouseButton(0)) // Player Input Actions 
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = inputCamera.ScreenPointToRay(Input.mousePosition);
             // const int letterLayer = 6;
             // const float maxDist = 10f;
             if (Physics.Raycast(ray, out RaycastHit hit))

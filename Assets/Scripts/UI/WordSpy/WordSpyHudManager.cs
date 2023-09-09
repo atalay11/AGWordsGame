@@ -32,7 +32,7 @@ public class WordSpyHudManager : MonoBehaviour
 
         foreach (var word in e.selectedWords)
         {
-            var searchedWordTransform = Instantiate(searchedWordPrefab, Vector3.zero, Quaternion.identity, hud);
+            var searchedWordTransform = Instantiate(searchedWordPrefab, hud);
             searchedWordTransform.GetComponent<SearchedWord>().SetWord(word);
             searchedWordDict[word] = searchedWordTransform;
         }
