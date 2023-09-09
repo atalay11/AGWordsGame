@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 
 public class GrandPaLevelManagerWordSpy : LevelManagerWordSpyBase
 {
-    protected override void AwakeImpl()
+    protected override void StartImpl()
     {
         m_CurrentLevel = LevelSelectionSceneData.Instance.LevelInfo;
         SetLevel(m_CurrentLevel);
