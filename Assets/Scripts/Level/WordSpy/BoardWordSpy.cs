@@ -203,7 +203,6 @@ public class BoardWordSpy : MonoBehaviour
         var spacingSpace = (m_EdgeLength - 1) * spacing;
         frustumHeight -= (boardPadding.top + boardPadding.bottom + spacingSpace);
         frustumWidth -= (boardPadding.left + boardPadding.right + spacingSpace);
-        Debug.Log($"h: {frustumHeight}, w: {frustumWidth}");
 
         float elementHeight = 1;
         float elementWidth = 1;
