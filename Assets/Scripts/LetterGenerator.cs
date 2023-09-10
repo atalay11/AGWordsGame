@@ -14,9 +14,9 @@ public class LetterGenerator : MonoBehaviour
         return newLetterCube;
     }
 
-    public Transform Generate(char letter, Vector3 position, Quaternion rotation, Transform parent)
+    public Transform Generate(char letter, Transform parent)
     {
-        var newLetterCube = Instantiate(letterPrefab, position, rotation, parent);
+        var newLetterCube = Instantiate(letterPrefab, parent);
         var letterCube = newLetterCube.GetComponent<LetterCube>();
         letterCube.SetLetter(letter);
         return newLetterCube;

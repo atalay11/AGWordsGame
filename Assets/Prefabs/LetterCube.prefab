@@ -11,21 +11,20 @@ GameObject:
   - component: {fileID: 5925557409943398562}
   - component: {fileID: 5562341939557777892}
   - component: {fileID: 5220256742266658180}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: LetterCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5925557409943398562
-Transform:
+--- !u!224 &5925557409943398562
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3675814389941680166}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,6 +33,11 @@ Transform:
   - {fileID: 6863637984873953146}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &5562341939557777892
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,14 +130,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3062656052191303795, guid: 858904c3ff2b7a74ea96697a76870f79, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6235689307925984983, guid: 858904c3ff2b7a74ea96697a76870f79, type: 3}
       propertyPath: m_Name
       value: LetterCubeVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235689307925984983, guid: 858904c3ff2b7a74ea96697a76870f79, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6463894252685708781, guid: 858904c3ff2b7a74ea96697a76870f79, type: 3}
       propertyPath: letterCube
       value: 
       objectReference: {fileID: 5220256742266658180}
+    - target: {fileID: 8309912401685953585, guid: 858904c3ff2b7a74ea96697a76870f79, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

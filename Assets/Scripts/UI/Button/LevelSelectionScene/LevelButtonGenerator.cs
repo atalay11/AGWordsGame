@@ -10,9 +10,7 @@ public class LevelButtonGenerator : MonoBehaviour
 
     public void Generate(Level level)
     {
-        var newLevelButton = Instantiate(levelButtonPrefab);
-        newLevelButton.parent = parentObject;
-        newLevelButton.localScale = Vector3.one;
+        var newLevelButton = Instantiate(levelButtonPrefab, parentObject);
         var textMesh = newLevelButton.GetComponentInChildren<TextMeshProUGUI>();
         textMesh.text = level.Value.ToString();
     }
