@@ -8,13 +8,13 @@ public class PlaySceneMenu : MonoBehaviour
     public void OnBackIconButtonPressed()
     {
         Debug.Log("LoadLevelSelectionScene");
-        SceneLoader.LoadLevelSelectionScene();
+        SceneLoader.Instance.LoadLevelSelectionScene();
     }
 
     // Bunlar hep ömer yüzünden
     public void GoToModeSelection()
     {
-        SceneLoader.LoadPlayModesScene();
+        SceneLoader.Instance.LoadPlayModesScene();
     }
 
 
