@@ -16,13 +16,13 @@ public class LevelSelectionMenu : GenericSingleton<LevelSelectionMenu>
 
     public void OnLevelButtonPressed()
     {
-        SceneLoader.LoadGameScene(m_GameMode);
+        SceneLoader.Instance.LoadGameScene(m_GameMode);
     }
 
     public void OnBackIconButtonPressed()
     {
         Debug.Log("Load Game Modes Scene");
-        SceneLoader.LoadPlayModesScene();
+        SceneLoader.Instance.LoadPlayModesScene();
     }
 
     private void InstantiateLevelButtonsForGameMode()

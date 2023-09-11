@@ -7,7 +7,7 @@ public class MainMenu : GenericSingleton<MainMenu>
 {
     public void OnPlayButtonPressed()
     {
-        SceneLoader.LoadPlayModesScene();
+        SceneLoader.Instance.LoadPlayModesScene();
     }
 
     public void OnSettingsButtonPressed()

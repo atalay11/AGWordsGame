@@ -6,17 +6,17 @@ public class ModesMenu : GenericSingleton<ModesMenu>
 {
     public void OnPlayButtonPressed()
     {
-        SceneLoader.LoadLevelSelectionScene();
+        SceneLoader.Instance.LoadLevelSelectionScene();
     }
 
     public void OnArcadeWordSpyButtonPressed()
     {
-        SceneLoader.LoadGameScene(GameMode.WordSpyArcade);
+        SceneLoader.Instance.LoadGameScene(GameMode.WordSpyArcade);
     }
 
     public void OnBackIconButtonPressed()
     {
         Debug.Log("Load Main Menu Scene");
-        SceneLoader.LoadMainMenuScene();
+        SceneLoader.Instance.LoadMainMenuScene();
     }
 }
