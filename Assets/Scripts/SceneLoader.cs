@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,8 @@ public class SceneLoader : GenericSingleton<SceneLoader>
 {
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private Slider slider;
+    [SerializeField] private TextMeshProUGUI progressText;
+    [SerializeField] private float loadDummyWaitTime = 0.5f;
 
     const string mainMenuScene = "MainMenuScene";
     const string playModesScene = "PlayModesScene";
@@ -19,7 +22,7 @@ public class SceneLoader : GenericSingleton<SceneLoader>
 
     public void LoadMainMenuScene()
     {
-        LoadSceneAsyncWithLoadingScene(mainMenuScene, LoadSceneMode.Single);
+        SceneManager.LoadScene(mainMenuScene, LoadSceneMode.Single);
     }
 
     public void LoadGameScene(GameMode gameMode)
@@ -36,12 +39,12 @@ public class SceneLoader : GenericSingleton<SceneLoader>
 
     public void LoadPlayModesScene()
     {
-        LoadSceneAsyncWithLoadingScene(playModesScene, LoadSceneMode.Single);
+        SceneManager.LoadScene(playModesScene, LoadSceneMode.Single);
     }
 
     public void LoadLevelSelectionScene()
     {
-        LoadSceneAsyncWithLoadingScene(levelSelectionScene, LoadSceneMode.Single);
+        SceneManager.LoadScene(levelSelectionScene, LoadSceneMode.Single);
     }
 
     private void LoadSceneAsyncWithLoadingScene(string sceneName, LoadSceneMode mode)
@@ -55,14 +58,19 @@ public class SceneLoader : GenericSingleton<SceneLoader>
 
         loadingScreen.SetActive(true);
 
-        while(!operation.isDone)
+        float timer = 0.0f;
+        while(!operation.isDone || timer < loadDummyWaitTime)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            // float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            float progress = timer / loadDummyWaitTime;
             slider.value = progress;
+            timer += Time.deltaTime;
+            progressText.text = "Loading... " + (int)(progress * 100.0f) + "%";
 
             yield return null;
         }
         loadingScreen.SetActive(false);
+        slider.value = 0.0f;
     }
 
 }
