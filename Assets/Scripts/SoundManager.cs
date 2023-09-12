@@ -21,7 +21,7 @@ public static class SoundManager
         if (m_oneShotSoundGameObject == null)
         {
             GameObject m_oneShotSoundGameObject = new GameObject("One Shot Sound");
-            AudioSource m_oneShotAudioClip = m_oneShotSoundGameObject.AddComponent<AudioSource>();
+            m_oneShotAudioClip = m_oneShotSoundGameObject.AddComponent<AudioSource>();
         }
     }
 
