@@ -1,14 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
 {
-    protected override void AwakeImpl()
-    {
-        SetScore();
-    }
-
     protected override void StartImpl()
     {
         NewBoard(RandomLevelInfo());
@@ -24,10 +20,7 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
             if (m_gameOver == false)
             {
                 m_passedTime = m_totalTime;
-                SaveGameData();
-                Debug.Log("GameOver!");
-                // todo open game over visual
-                // save highscore
+                GameOver();
             }
 
 
@@ -58,7 +51,7 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
     void UpdateScore(string word)
     {
         var lvlInfo = GetLevelInfo();
-        m_score += word.Length * lvlInfo.edgeLength;
+        m_score += word.Length * lvlInfo.edgeLength * 100;
         SetScore();
     }
 
@@ -92,7 +85,37 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
         }
     }
 
-    // -- 
+    private void GameOver()
+    {
+        Debug.Log("GameOver!");
+        SaveGameData();
+
+        var args = new GameOverEventArgs { score = m_score, highScore = m_curGameData.highestScore };
+        OnGameOver?.Invoke(this, args);
+    }
+
+
+    public void PlayAgain()
+    {
+        m_passedTime = 0f;
+        m_totalTime = 10f;
+        m_score = 0;
+        m_gameOver = false;
+        SetScore();
+        NewBoard(RandomLevelInfo());
+    }
+
+    // Events
+
+    public EventHandler<GameOverEventArgs> OnGameOver;
+    public class GameOverEventArgs : EventArgs
+    {
+        public long score;
+        public long highScore;
+    }
+
+
+    // Variables
 
     [SerializeField] private TimerVisual m_timerVisual;
     [SerializeField] private ScoreVisual m_scoreVisual;
