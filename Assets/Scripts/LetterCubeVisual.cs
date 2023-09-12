@@ -44,6 +44,7 @@ public class LetterCubeVisual : MonoBehaviour
 
 
             PlayIsSelectedAnimation(true);
+            SoundManager.PlaySound(SoundManager.Sound.SelectLetterCube);
         }
     }
 
