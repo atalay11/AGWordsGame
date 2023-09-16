@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -23,9 +25,25 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
         Turkish
     }
 
+    public EventHandler<OnLanguageChangeEventArgs> OnLanguageChangeEvent;
+    public class OnLanguageChangeEventArgs : EventArgs
+    {
+        public Language oldLanguage;
+        public Language newLanguage;
+    }
+
+    protected override void AwakeImpl()
+    {
+        SetLanguageManually(CurrentLanguage);
+    }
+
     public void SetLanguageManually(Language language)
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)language];
+        if (CurrentLanguage != language)
+        {
+            OnLanguageChangeEvent?.Invoke(this, new OnLanguageChangeEventArgs{oldLanguage = CurrentLanguage, newLanguage = language});
+        }
         CurrentLanguage = language;
         SavePreferedLanguage(language);
         Debug.LogFormat("Language is changed to: `{0}`", LocalizationSettings.SelectedLocale.name);
@@ -63,5 +81,5 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
     }
 
 
-    private Language currentLanguage = Language.English;
+    private Language currentLanguage = Language.Turkish;
 }

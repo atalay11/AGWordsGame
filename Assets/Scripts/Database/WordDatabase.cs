@@ -4,101 +4,68 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System;
 
 public class WordDatabase : GenericSingleton<WordDatabase>
 {
-    public enum WordType : int
-    {
-        Adj,
-        Noun,
-        Verb,
-        WordTypeNB
-    }
+    // protected override void AwakeImpl()
+    // {
+    //     Initialize();
+    // }
 
-    protected override void AwakeImpl()
+    private void Start()
     {
         Initialize();
-        DontDestroyOnLoad(gameObject);
     }
-
+    
     public void Initialize()
     {
-        adjs = new HashSet<string>();
-        nouns = new HashSet<string>();
-        verbs = new HashSet<string>();
+        Debug.Log($"AHA`");
 
-        TextAsset coreWordnet = Resources.Load<TextAsset>("CoreWordnet/core-wordnet");
-        ReadCoreWordnet(coreWordnet);
+        m_WordSet = new HashSet<string>();
+        PrepareWordsForLanguage(LocalizationManager.Instance.CurrentLanguage);
+        LocalizationManager.Instance.OnLanguageChangeEvent += LocalizationManager_OnLanguageChangeEvent;
+    }
 
-        Debug.Log($"adj {adjs.Count}");
-        Debug.Log($"nouns {nouns.Count}");
-        Debug.Log($"verbs {verbs.Count}");
+    private void LocalizationManager_OnLanguageChangeEvent(object sender, LocalizationManager.OnLanguageChangeEventArgs e)
+    {
+        PrepareWordsForLanguage(e.newLanguage);
     }
 
     public string GetRandomWord()
     {
         // Randomly select word type
-        WordType wordType = (WordType)m_Random.Next((int)WordType.WordTypeNB);
+        return m_WordSet.ElementAt(m_Random.Next(m_WordSet.Count));
+    }
 
-        if (wordType == WordType.Adj)
-        {
-            return adjs.ElementAt(m_Random.Next(adjs.Count));
-        }
-        else if (wordType == WordType.Noun)
-        {
-            return nouns.ElementAt(m_Random.Next(nouns.Count));
-        }
-        else if (wordType == WordType.Verb)
-        {
-            return verbs.ElementAt(m_Random.Next(verbs.Count));
+    private void PrepareWordsForLanguage(LocalizationManager.Language language)
+    {
+        m_WordSet.Clear();
+
+        if (m_LanguageToWordsFileMap.TryGetValue(language, out string filePath))
+        {    
+            TextAsset csvFile = Resources.Load<TextAsset>(filePath);
+            string[] words = csvFile.text.Split('\n').ToArray(); ; // Split the file into lines
+
+            foreach (string word in words)
+            {
+                m_WordSet.Add(word.Trim().ToUpper());
+            }
+            Debug.Log($"Changing language to: `{language}`. Example word: `{words[0]}`");
         }
         else
         {
-            throw new System.NotImplementedException($"wordType: `{wordType}` is not implemented yet.");
+            throw new NotImplementedException($"Language {language} is not available.");
         }
     }
 
-    public static HashSet<string> GetAdjs()
-    {
-        return adjs;
-    }
-
-    public static HashSet<string> GetNouns()
-    {
-        return nouns;
-    }
-
-    public static HashSet<string> GetVerbs()
-    {
-        return verbs;
-    }
-
-
-    private static void ReadCoreWordnet(TextAsset csvFile)
-    {
-        // First row is consist of column names 
-        string[] lines = csvFile.text.Split('\n').Skip(1).ToArray(); ; // Split the file into lines
-
-        foreach (string line in lines)
-        {
-            string[] values = line.Split(','); // Split the line into values
-
-            var form = values[0];
-            var word = values[1].Trim().ToUpper();
-
-            if (form == "a")
-                adjs.Add(word);
-            else if (form == "n")
-                nouns.Add(word);
-            else if (form == "v")
-                verbs.Add(word);
-
-        }
-    }
-
-    private static HashSet<string> adjs;
-    private static HashSet<string> nouns;
-    private static HashSet<string> verbs;
+    private HashSet<string> m_WordSet;
 
     private readonly System.Random m_Random = new System.Random();
+    private readonly Dictionary<LocalizationManager.Language, string> m_LanguageToWordsFileMap = new Dictionary<LocalizationManager.Language, string>
+    {
+        {LocalizationManager.Language.English, "CoreWordnet/core-wordnet"},
+        {LocalizationManager.Language.Turkish, "TurkishWords/turkish_words"}
+    };  
 }
