@@ -448,7 +448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 540, y: 0}
+  m_AnchoredPosition: {x: 540.198, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &353434577
@@ -950,8 +950,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Another Game's \nWordGame
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 565a437d2334c974bb90fe33537223df, type: 2}
-  m_sharedMaterial: {fileID: -4494603169862128048, guid: 565a437d2334c974bb90fe33537223df, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c0870a6cc341e6649a7f34756733bdc4, type: 2}
+  m_sharedMaterial: {fileID: -6650833592361857925, guid: c0870a6cc341e6649a7f34756733bdc4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
