@@ -6,22 +6,20 @@ public class LetterUtils : GenericSingleton<LetterUtils>
 {
     public char GenerateRandomLetter()
     {
-        if (languageUppercaseMappings.TryGetValue(Application.systemLanguage, out string uppercaseLetters))
+        if (languageUppercaseMappings.TryGetValue(LocalizationManager.Instance.CurrentLanguage, out string uppercaseLetters))
         {
             int randomIndex = UnityEngine.Random.Range(0, uppercaseLetters.Length);
             return uppercaseLetters[randomIndex];
         }
 
         // Default to English letters if language not found
-        return languageUppercaseMappings[SystemLanguage.English][UnityEngine.Random.Range(0, 26)];
+        return languageUppercaseMappings[LocalizationManager.Language.English][UnityEngine.Random.Range(0, 26)];
     }
 
-    private Dictionary<SystemLanguage, string> languageUppercaseMappings = new Dictionary<SystemLanguage, string>
+    private Dictionary<LocalizationManager.Language, string> languageUppercaseMappings = new Dictionary<LocalizationManager.Language, string>
     {
-        { SystemLanguage.English, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
-        { SystemLanguage.Turkish, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ" },
-        { SystemLanguage.Spanish, "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ" },
-        { SystemLanguage.Russian, "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ" }
+        { LocalizationManager.Language.English, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+        { LocalizationManager.Language.Turkish, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ" }
     };
 
 }

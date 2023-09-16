@@ -9,7 +9,6 @@ public class LevelSelectionMenu : GenericSingleton<LevelSelectionMenu>
 
     protected override void AwakeImpl()
     {
-        Debug.Log("AwakeImpl is called!");
         m_GameMode = PlayModesSceneData.Instance.GameMode;
         InstantiateLevelButtonsForGameMode();
     }

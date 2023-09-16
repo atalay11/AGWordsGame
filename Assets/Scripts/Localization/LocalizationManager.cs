@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -23,9 +25,17 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
         Turkish
     }
 
+    public EventHandler<OnLanguageChangeEventArgs> OnLanguageChangeEvent;
+    public class OnLanguageChangeEventArgs : EventArgs
+    {
+        public Language oldLanguage;
+        public Language newLanguage;
+    }
+
     public void SetLanguageManually(Language language)
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)language];
+        OnLanguageChangeEvent?.Invoke(this, new OnLanguageChangeEventArgs{oldLanguage = CurrentLanguage, newLanguage = language});
         CurrentLanguage = language;
         SavePreferedLanguage(language);
         Debug.LogFormat("Language is changed to: `{0}`", LocalizationSettings.SelectedLocale.name);
@@ -47,12 +57,18 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
     {
         var prefs = PersistanceManager.Instance.GetUserPreferences();
 
+        Language language;
         if (prefs.language == SystemLanguage.English)
-            currentLanguage = Language.English;
+           language = Language.English;
         else if (prefs.language == SystemLanguage.Turkish)
-            currentLanguage = Language.Turkish;
-
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)currentLanguage];
+           language = Language.Turkish;
+        else
+        {
+           language = Language.English;
+           Debug.LogError($"No such language: `{prefs.language}` is found. Setting defaul language ({SystemLanguage.English})");
+        }
+            
+        SetLanguageManually(language);
     }
 
     IEnumerator Start()
