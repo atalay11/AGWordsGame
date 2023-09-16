@@ -27,6 +27,14 @@ MonoBehaviour:
     m_Key: Quit
     m_Metadata:
       m_Items: []
+  - m_Id: 9700199879421952
+    m_Key: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9700203725598720
+    m_Key: Close
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
