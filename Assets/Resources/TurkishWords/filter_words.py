@@ -105,6 +105,8 @@ cursed_words = [
     "attırmak", 
     "damping", 
     "çıplak", 
+    "kondom", 
+    "prezervatif", 
 ]
 
 

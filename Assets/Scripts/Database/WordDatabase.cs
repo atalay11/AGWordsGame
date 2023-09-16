@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using System;
+using System.Globalization;
 
 public class WordDatabase : GenericSingleton<WordDatabase>
 {
@@ -21,8 +22,6 @@ public class WordDatabase : GenericSingleton<WordDatabase>
     
     public void Initialize()
     {
-        Debug.Log($"AHA`");
-
         m_WordSet = new HashSet<string>();
         PrepareWordsForLanguage(LocalizationManager.Instance.CurrentLanguage);
         LocalizationManager.Instance.OnLanguageChangeEvent += LocalizationManager_OnLanguageChangeEvent;
@@ -50,9 +49,8 @@ public class WordDatabase : GenericSingleton<WordDatabase>
 
             foreach (string word in words)
             {
-                m_WordSet.Add(word.Trim().ToUpper());
+                m_WordSet.Add(word.Trim().ToUpper(m_CultureInfoMap[language]));
             }
-            Debug.Log($"Changing language to: `{language}`. Example word: `{words[0]}`");
         }
         else
         {
@@ -65,7 +63,13 @@ public class WordDatabase : GenericSingleton<WordDatabase>
     private readonly System.Random m_Random = new System.Random();
     private readonly Dictionary<LocalizationManager.Language, string> m_LanguageToWordsFileMap = new Dictionary<LocalizationManager.Language, string>
     {
-        {LocalizationManager.Language.English, "CoreWordnet/core-wordnet"},
-        {LocalizationManager.Language.Turkish, "TurkishWords/turkish_words"}
+        { LocalizationManager.Language.English, "CoreWordnet/core-wordnet" },
+        { LocalizationManager.Language.Turkish, "TurkishWords/turkish_words" }
     };  
+
+    private readonly Dictionary<LocalizationManager.Language, CultureInfo> m_CultureInfoMap = new Dictionary<LocalizationManager.Language, CultureInfo>
+    {
+        { LocalizationManager.Language.English, new CultureInfo("en-US") },
+        { LocalizationManager.Language.Turkish, new CultureInfo("tr-TR") }
+    };
 }

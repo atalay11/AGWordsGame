@@ -32,18 +32,10 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
         public Language newLanguage;
     }
 
-    protected override void AwakeImpl()
-    {
-        SetLanguageManually(CurrentLanguage);
-    }
-
     public void SetLanguageManually(Language language)
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)language];
-        if (CurrentLanguage != language)
-        {
-            OnLanguageChangeEvent?.Invoke(this, new OnLanguageChangeEventArgs{oldLanguage = CurrentLanguage, newLanguage = language});
-        }
+        OnLanguageChangeEvent?.Invoke(this, new OnLanguageChangeEventArgs{oldLanguage = CurrentLanguage, newLanguage = language});
         CurrentLanguage = language;
         SavePreferedLanguage(language);
         Debug.LogFormat("Language is changed to: `{0}`", LocalizationSettings.SelectedLocale.name);
@@ -65,12 +57,18 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
     {
         var prefs = PersistanceManager.Instance.GetUserPreferences();
 
+        Language language;
         if (prefs.language == SystemLanguage.English)
-            currentLanguage = Language.English;
+           language = Language.English;
         else if (prefs.language == SystemLanguage.Turkish)
-            currentLanguage = Language.Turkish;
-
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)currentLanguage];
+           language = Language.Turkish;
+        else
+        {
+           language = Language.English;
+           Debug.LogError($"No such language: `{prefs.language}` is found. Setting defaul language ({SystemLanguage.English})");
+        }
+            
+        SetLanguageManually(language);
     }
 
     IEnumerator Start()
@@ -81,5 +79,5 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
     }
 
 
-    private Language currentLanguage = Language.Turkish;
+    private Language currentLanguage = Language.English;
 }
