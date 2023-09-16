@@ -1285,17 +1285,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1160750487 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1955851105046712205, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
-  m_PrefabInstance: {fileID: 1333671031}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49b0ecc66dc3ab45b8edf9190459be5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1312238928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,8 +1543,40 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 942601150669627005, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5401337692848490128}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4955651599690626745, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1333671034}
   m_SourcePrefab: {fileID: 100100000, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
+--- !u!1 &1333671032 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4955651599690626745, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
+  m_PrefabInstance: {fileID: 1333671031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1333671033 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5654722627873248090, guid: 341a6a95284cc094288f435b584edbb2, type: 3}
+  m_PrefabInstance: {fileID: 1333671031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333671032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1333671034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333671032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49b0ecc66dc3ab45b8edf9190459be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_text: {fileID: 1333671033}
 --- !u!1 &1361337996
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2303,7 @@ MonoBehaviour:
   board: {fileID: 7261390034845759809}
   currentEdgeLength: -1
   m_timerVisual: {fileID: 5014653646495685105}
-  m_scoreVisual: {fileID: 1160750487}
+  m_scoreVisual: {fileID: 1333671034}
 --- !u!1 &2146049827
 GameObject:
   m_ObjectHideFlags: 0

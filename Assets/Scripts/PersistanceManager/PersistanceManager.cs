@@ -8,13 +8,21 @@ public class ArcadeWordSpyGameData
     public long highestScore;
 }
 
+public class UserPreferences
+{
+    public SystemLanguage language;
+}
+
+
 public class PersistanceManager : GenericSingleton<PersistanceManager>
 {
     ArcadeWordSpyDatabase m_arcadeWordSpyDatabase;
+    UserPerferencesDatabase m_userPreferences;
 
     protected override void AwakeImpl()
     {
         m_arcadeWordSpyDatabase = new ArcadeWordSpyDatabase();
+        m_userPreferences = new UserPerferencesDatabase();
     }
 
     public ArcadeWordSpyGameData GetArcadeWordSpyGameData()
@@ -26,6 +34,17 @@ public class PersistanceManager : GenericSingleton<PersistanceManager>
     {
         m_arcadeWordSpyDatabase.SaveData(gameData);
     }
+
+    public UserPreferences GetUserPreferences()
+    {
+        return m_userPreferences.Load();
+    }
+
+    public void SetUserPreferences(UserPreferences userPreferences)
+    {
+        m_userPreferences.Save(userPreferences);
+    }
+
 }
 
 class GameDatabaseUtils
@@ -87,6 +106,42 @@ class ArcadeWordSpyDatabase
 
     // -- 
     private readonly string m_path = Application.persistentDataPath + Path.DirectorySeparatorChar + "arcadeWordSpy.json";
+
+}
+
+
+class UserPerferencesDatabase
+{
+    public void Save(UserPreferences data)
+    {
+        CreateDefaultFileIfNotExists();
+
+        GameDatabaseUtils.SaveData(m_path, data);
+    }
+
+    public UserPreferences Load()
+    {
+        CreateDefaultFileIfNotExists();
+
+        return GameDatabaseUtils.LoadData<UserPreferences>(m_path);
+    }
+
+    private void CreateDefaultFileIfNotExists()
+    {
+        if (GameDatabaseUtils.CreateFile(m_path))
+        {
+            Debug.Log($"Creating WordSpyDatabase file.");
+            GameDatabaseUtils.SaveData(m_path, InitialWordSpyGameData());
+        }
+    }
+
+    private UserPreferences InitialWordSpyGameData()
+    {
+        return new UserPreferences { language = Application.systemLanguage };
+    }
+
+    // -- 
+    private readonly string m_path = Application.persistentDataPath + Path.DirectorySeparatorChar + "userPreferences.json";
 
 }
 
