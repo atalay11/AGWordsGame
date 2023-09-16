@@ -10,12 +10,13 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
 {
     // Must be in the same order with `LocalizationSettings.AvailableLocales.Locales`
 
-    public Language CurrentLanguage 
+    public Language CurrentLanguage
     {
         get { return currentLanguage; }
         private set { currentLanguage = value; }
     }
 
+    // ?? Can we use SystemLanguage enum instead 
     public enum Language : int
     {
         English = 0,
@@ -26,13 +27,39 @@ public class LocalizationManager : GenericSingleton<LocalizationManager>
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)language];
         CurrentLanguage = language;
+        SavePreferedLanguage(language);
         Debug.LogFormat("Language is changed to: `{0}`", LocalizationSettings.SelectedLocale.name);
+    }
+
+    public void SavePreferedLanguage(Language language)
+    {
+        var prefs = PersistanceManager.Instance.GetUserPreferences();
+
+        if (language == Language.English)
+            prefs.language = SystemLanguage.English;
+        else if (language == Language.Turkish)
+            prefs.language = SystemLanguage.Turkish;
+
+        PersistanceManager.Instance.SetUserPreferences(prefs);
+    }
+
+    public void SetPreferedLanguage()
+    {
+        var prefs = PersistanceManager.Instance.GetUserPreferences();
+
+        if (prefs.language == SystemLanguage.English)
+            currentLanguage = Language.English;
+        else if (prefs.language == SystemLanguage.Turkish)
+            currentLanguage = Language.Turkish;
+
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)currentLanguage];
     }
 
     IEnumerator Start()
     {
         // Wait for the localization system to initialize, loading Locales, preloading etc.
         yield return LocalizationSettings.InitializationOperation;
+        SetPreferedLanguage();
     }
 
 

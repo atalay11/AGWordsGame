@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: "\xC7\u0131k\u0131\u015F"
     m_Metadata:
       m_Items: []
+  - m_Id: 9700199879421952
+    m_Localized: Lisan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9700203725598720
+    m_Localized: Kapat
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
