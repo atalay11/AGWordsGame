@@ -742,7 +742,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   letterCube: {fileID: 0}
+  normalColor: {r: 0.9607843, g: 0.9647059, b: 0.98039216, a: 1}
   selectColor: {r: 0, g: 0.5921569, b: 0.9019608, a: 1}
+  correctColor: {r: 0.29803923, g: 0.81960785, b: 0.21568628, a: 1}
+  particles: {fileID: 0}
 --- !u!95 &596828481791350320
 Animator:
   serializedVersion: 5

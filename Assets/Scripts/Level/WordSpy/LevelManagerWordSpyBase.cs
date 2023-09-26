@@ -114,6 +114,7 @@ public class LevelManagerWordSpyBase : LevelManagerBase
         {
             m_SelectedWords.Remove(e.word);
             OnCorrectWordSelectedImpl(e.word);
+            OnSelectedCorrect?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -139,6 +140,8 @@ public class LevelManagerWordSpyBase : LevelManagerBase
     {
         public List<string> selectedWords;
     }
+
+    public EventHandler OnSelectedCorrect;
 
 }
 
