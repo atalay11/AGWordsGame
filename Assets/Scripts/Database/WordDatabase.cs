@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using System;
 using System.Globalization;
 
@@ -19,7 +16,7 @@ public class WordDatabase : GenericSingleton<WordDatabase>
     {
         Initialize();
     }
-    
+
     public void Initialize()
     {
         m_WordSet = new HashSet<string>();
@@ -43,7 +40,7 @@ public class WordDatabase : GenericSingleton<WordDatabase>
         m_WordSet.Clear();
 
         if (m_LanguageToWordsFileMap.TryGetValue(language, out string filePath))
-        {    
+        {
             TextAsset csvFile = Resources.Load<TextAsset>(filePath);
             string[] words = csvFile.text.Split('\n').ToArray(); ; // Split the file into lines
 
@@ -65,7 +62,7 @@ public class WordDatabase : GenericSingleton<WordDatabase>
     {
         { LocalizationManager.Language.English, "CoreWordnet/core-wordnet" },
         { LocalizationManager.Language.Turkish, "TurkishWords/turkish_words" }
-    };  
+    };
 
     private readonly Dictionary<LocalizationManager.Language, CultureInfo> m_CultureInfoMap = new Dictionary<LocalizationManager.Language, CultureInfo>
     {

@@ -34,6 +34,9 @@ public class LetterSelectionChecker : GenericSingleton<LetterSelectionChecker>
     List<LetterCube> selectedLetterCubes;
     List<LetterCube> currentLetterCubes;
     Direction wordDirection = Direction.Unknown;
+    [SerializeField] LevelManagerWordSpyBase levelManagerWordSpyBase;
+
+    // functions
 
     protected override void AwakeImpl()
     {
@@ -45,6 +48,7 @@ public class LetterSelectionChecker : GenericSingleton<LetterSelectionChecker>
     {
         GameInputWordSpy.Instance.OnLetterLayerSelectAction += GameInput_OnLetterLayerSelectAction;
         GameInputWordSpy.Instance.OnSelectReleaseAction += GameInput_OnSelectReleaseAction;
+        levelManagerWordSpyBase.OnSelectedCorrect += LevelManagerWordSpy_OnSelectedCorrect;
     }
 
     private void GameInput_OnLetterLayerSelectAction(object sender, GameInputWordSpy.OnLetterLayerSelectEventArgs e)
@@ -122,4 +126,14 @@ public class LetterSelectionChecker : GenericSingleton<LetterSelectionChecker>
         originLetterCube = null;
         selectedLetterCubes.Clear();
     }
+
+    private void LevelManagerWordSpy_OnSelectedCorrect(object sender, EventArgs e)
+    {
+        originLetterCube.GetComponentInChildren<LetterCubeVisual>().PlayCorrectAnimation();
+        foreach (var selected in selectedLetterCubes)
+        {
+            selected.GetComponentInChildren<LetterCubeVisual>().PlayCorrectAnimation();
+        }
+    }
+
 }

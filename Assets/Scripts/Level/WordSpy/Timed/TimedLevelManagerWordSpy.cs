@@ -120,7 +120,7 @@ public class LevelManagerTimedWordSpy : LevelManagerWordSpyBase
     [SerializeField] private TimerVisual m_timerVisual;
     [SerializeField] private ScoreVisual m_scoreVisual;
     private float m_passedTime = 0f;
-    private float m_totalTime = 10f;
+    private float m_totalTime = 100f;
     private long m_score = 0;
     private bool m_gameOver = false;
     ArcadeWordSpyGameData m_curGameData = new ArcadeWordSpyGameData();
