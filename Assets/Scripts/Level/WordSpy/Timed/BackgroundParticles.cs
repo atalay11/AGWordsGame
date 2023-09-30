@@ -14,6 +14,8 @@ public class BackgroundParticles : MonoBehaviour
     private void Awake()
     {
         m_bgParticleSystem = GetComponent<ParticleSystem>();
+        m_bgParticleSystem.Stop();
+        m_bgParticleSystem.Clear();
 
         // Select Random Sprite
 
@@ -33,7 +35,12 @@ public class BackgroundParticles : MonoBehaviour
         psShape.scale = oldScale;
         psShape.enabled = true;
 
+        var psMain = m_bgParticleSystem.main;
+        psMain.prewarm = true;
+
         m_cameraHeight = cameraHeight;
+
+        m_bgParticleSystem.Play();
     }
 
     private void Update()
