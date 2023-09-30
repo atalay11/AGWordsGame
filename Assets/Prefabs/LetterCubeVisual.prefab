@@ -707,7 +707,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d197f4f840b47594ebb26801dbf8fa3b, type: 2}
+  - {fileID: 2100000, guid: d2480efeda5c675479be5b5b60d20811, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -745,7 +745,6 @@ MonoBehaviour:
   normalColor: {r: 0.9607843, g: 0.9647059, b: 0.98039216, a: 1}
   selectColor: {r: 0, g: 0.5921569, b: 0.9019608, a: 1}
   correctColor: {r: 0.29803923, g: 0.81960785, b: 0.21568628, a: 1}
-  particles: {fileID: 0}
 --- !u!95 &596828481791350320
 Animator:
   serializedVersion: 5
